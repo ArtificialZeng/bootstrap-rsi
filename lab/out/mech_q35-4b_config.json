@@ -1,0 +1,8 @@
+{
+ "n_eval": 400,
+ "cap": 4096,
+ "fixed": null,
+ "dirs": null,
+ "practice": null,
+ "bs": 128
+}

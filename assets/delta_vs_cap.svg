@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="en" width="800" height="474" viewBox="0 0 800 474" role="img" aria-labelledby="title method" style="max-width:100%;height:auto">
+  <title id="title">Accuracy change by token cap</title>
+  <style>text {font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif; font-variant-numeric: tabular-nums;}</style>
+  <rect x="0" y="0" width="800" height="474" fill="#ffffff" />
+  <text x="36" y="44" font-size="27" fill="#182635" text-anchor="start" font-weight="650">Accuracy change by token cap</text>
+  <text x="36" y="454" font-size="13" fill="#46586a" text-anchor="start" font-weight="400" id="method">Answers truncated at 4096 were continued to the larger cap. Intermediate caps are offline re-cuts.</text>
+  <text x="36" y="106" font-size="14" fill="#46586a" text-anchor="start" font-weight="400">Error bars show 95% intervals. Markers are offset horizontally for readability.</text>
+  <rect x="86" y="146" width="666" height="219" fill="#f6f8fb" />
+  <line x1="101.0" y1="146" x2="101.0" y2="365" stroke="#cdd7e2" stroke-width="1" stroke-opacity="1" stroke-dasharray="3 5" />
+  <text x="101.0" y="388" font-size="14" fill="#46586a" text-anchor="middle" font-weight="400">4,096</text>
+  <line x1="207.0" y1="146" x2="207.0" y2="365" stroke="#cdd7e2" stroke-width="1" stroke-opacity="1" stroke-dasharray="3 5" />
+  <text x="207.0" y="388" font-size="14" fill="#46586a" text-anchor="middle" font-weight="400">6,144</text>
+  <line x1="313.0" y1="146" x2="313.0" y2="365" stroke="#cdd7e2" stroke-width="1" stroke-opacity="1" stroke-dasharray="3 5" />
+  <text x="313.0" y="388" font-size="14" fill="#46586a" text-anchor="middle" font-weight="400">8,192</text>
+  <line x1="525.0" y1="146" x2="525.0" y2="365" stroke="#cdd7e2" stroke-width="1" stroke-opacity="1" stroke-dasharray="3 5" />
+  <text x="525.0" y="388" font-size="14" fill="#46586a" text-anchor="middle" font-weight="400">12,288</text>
+  <line x1="737.0" y1="146" x2="737.0" y2="365" stroke="#cdd7e2" stroke-width="1" stroke-opacity="1" stroke-dasharray="3 5" />
+  <text x="737.0" y="388" font-size="14" fill="#46586a" text-anchor="middle" font-weight="400">16,384</text>
+  <line x1="86" y1="365.0" x2="752" y2="365.0" stroke="#cdd7e2" stroke-width="1" stroke-opacity="1" />
+  <text x="76" y="370.0" font-size="14" fill="#46586a" text-anchor="end" font-weight="400">−20</text>
+  <line x1="86" y1="310.25" x2="752" y2="310.25" stroke="#cdd7e2" stroke-width="1" stroke-opacity="1" />
+  <text x="76" y="315.25" font-size="14" fill="#46586a" text-anchor="end" font-weight="400">−10</text>
+  <line x1="86" y1="255.5" x2="752" y2="255.5" stroke="#65768a" stroke-width="1.5" stroke-opacity="1" />
+  <text x="76" y="260.5" font-size="14" fill="#46586a" text-anchor="end" font-weight="400">0</text>
+  <line x1="86" y1="200.75" x2="752" y2="200.75" stroke="#cdd7e2" stroke-width="1" stroke-opacity="1" />
+  <text x="76" y="205.75" font-size="14" fill="#46586a" text-anchor="end" font-weight="400">+10</text>
+  <line x1="86" y1="146.0" x2="752" y2="146.0" stroke="#cdd7e2" stroke-width="1" stroke-opacity="1" />
+  <text x="76" y="151.0" font-size="14" fill="#46586a" text-anchor="end" font-weight="400">+20</text>
+  <text x="86" y="136" font-size="14" fill="#46586a" text-anchor="start" font-weight="400">Change (percentage points)</text>
+  <text x="419.0" y="418" font-size="14" fill="#182635" text-anchor="middle" font-weight="400">Output token cap</text>
+  <line x1="36" y1="75" x2="59" y2="75" stroke="#006ca6" stroke-width="2.4" stroke-opacity="1" />
+  <circle cx="47.5" cy="75" r="4" stroke="#006ca6" stroke-width="2" fill="#006ca6" />
+  <text x="68" y="80" font-size="14" fill="#182635" text-anchor="start" font-weight="400">s8 (2 seeds) - base (2 seeds)</text>
+  <line x1="92.0" y1="252.7625" x2="198.0" y2="232.23125" stroke="#006ca6" stroke-width="2.4" stroke-opacity="1" />
+  <line x1="198.0" y1="232.23125" x2="304.0" y2="227.440625" stroke="#006ca6" stroke-width="2.4" stroke-opacity="1" />
+  <line x1="304.0" y1="227.440625" x2="516.0" y2="218.54375" stroke="#006ca6" stroke-width="2.4" stroke-opacity="1" />
+  <line x1="516.0" y1="218.54375" x2="728.0" y2="228.809375" stroke="#006ca6" stroke-width="2.4" stroke-opacity="1" />
+  <line x1="92.0" y1="269.0375399901783" x2="92.0" y2="236.48746000982172" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="88.0" y1="269.0375399901783" x2="96.0" y2="269.0375399901783" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="88.0" y1="236.48746000982172" x2="96.0" y2="236.48746000982172" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="92.0" cy="252.7625" r="4" stroke="#006ca6" stroke-width="2" fill="#006ca6" />
+  <line x1="198.0" y1="250.75642777506596" x2="198.0" y2="213.70607222493408" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="194.0" y1="250.75642777506596" x2="202.0" y2="250.75642777506596" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="194.0" y1="213.70607222493408" x2="202.0" y2="213.70607222493408" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="198.0" cy="232.23125" r="4" stroke="#006ca6" stroke-width="2" fill="#006ca6" />
+  <line x1="304.0" y1="246.71886854300547" x2="304.0" y2="208.16238145699452" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="300.0" y1="246.71886854300547" x2="308.0" y2="246.71886854300547" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="300.0" y1="208.16238145699452" x2="308.0" y2="208.16238145699452" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="304.0" cy="227.440625" r="4" stroke="#006ca6" stroke-width="2" fill="#006ca6" />
+  <line x1="516.0" y1="238.46604915947614" x2="516.0" y2="198.62145084052386" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="512.0" y1="238.46604915947614" x2="520.0" y2="238.46604915947614" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="512.0" y1="198.62145084052386" x2="520.0" y2="198.62145084052386" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="516.0" cy="218.54375" r="4" stroke="#006ca6" stroke-width="2" fill="#006ca6" />
+  <line x1="728.0" y1="248.93501963461097" x2="728.0" y2="208.68373036538904" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="724.0" y1="248.93501963461097" x2="732.0" y2="248.93501963461097" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="724.0" y1="208.68373036538904" x2="732.0" y2="208.68373036538904" stroke="#006ca6" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="728.0" cy="228.809375" r="4" stroke="#006ca6" stroke-width="2" fill="#006ca6" />
+  <line x1="305" y1="75" x2="328" y2="75" stroke="#007561" stroke-width="2.4" stroke-opacity="1" stroke-dasharray="9 4" />
+  <circle cx="316.5" cy="75" r="4" stroke="#007561" stroke-width="2" fill="#007561" />
+  <text x="337" y="80" font-size="14" fill="#182635" text-anchor="start" font-weight="400">concise - base (2 seeds)</text>
+  <line x1="101.0" y1="183.640625" x2="207.0" y2="206.909375" stroke="#007561" stroke-width="2.4" stroke-opacity="1" stroke-dasharray="9 4" />
+  <line x1="207.0" y1="206.909375" x2="313.0" y2="224.01875" stroke="#007561" stroke-width="2.4" stroke-opacity="1" stroke-dasharray="9 4" />
+  <line x1="313.0" y1="224.01875" x2="525.0" y2="227.440625" stroke="#007561" stroke-width="2.4" stroke-opacity="1" stroke-dasharray="9 4" />
+  <line x1="525.0" y1="227.440625" x2="737.0" y2="247.971875" stroke="#007561" stroke-width="2.4" stroke-opacity="1" stroke-dasharray="9 4" />
+  <line x1="101.0" y1="204.74515069991622" x2="101.0" y2="162.53609930008378" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="97.0" y1="204.74515069991622" x2="105.0" y2="204.74515069991622" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="97.0" y1="162.53609930008378" x2="105.0" y2="162.53609930008378" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="101.0" cy="183.640625" r="4" stroke="#007561" stroke-width="2" fill="#007561" />
+  <line x1="207.0" y1="228.47996530056415" x2="207.0" y2="185.33878469943585" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="203.0" y1="228.47996530056415" x2="211.0" y2="228.47996530056415" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="203.0" y1="185.33878469943585" x2="211.0" y2="185.33878469943585" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="207.0" cy="206.909375" r="4" stroke="#007561" stroke-width="2" fill="#007561" />
+  <line x1="313.0" y1="246.58888096528366" x2="313.0" y2="201.4486190347163" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="309.0" y1="246.58888096528366" x2="317.0" y2="246.58888096528366" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="309.0" y1="201.4486190347163" x2="317.0" y2="201.4486190347163" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="313.0" cy="224.01875" r="4" stroke="#007561" stroke-width="2" fill="#007561" />
+  <line x1="525.0" y1="250.95919096511957" x2="525.0" y2="203.92205903488045" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="521.0" y1="250.95919096511957" x2="529.0" y2="250.95919096511957" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="521.0" y1="203.92205903488045" x2="529.0" y2="203.92205903488045" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="525.0" cy="227.440625" r="4" stroke="#007561" stroke-width="2" fill="#007561" />
+  <line x1="737.0" y1="271.56363030145593" x2="737.0" y2="224.3801196985441" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="733.0" y1="271.56363030145593" x2="741.0" y2="271.56363030145593" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="733.0" y1="224.3801196985441" x2="741.0" y2="224.3801196985441" stroke="#007561" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="737.0" cy="247.971875" r="4" stroke="#007561" stroke-width="2" fill="#007561" />
+  <line x1="556" y1="75" x2="579" y2="75" stroke="#81428d" stroke-width="2.4" stroke-opacity="1" stroke-dasharray="3 5" />
+  <circle cx="567.5" cy="75" r="4" stroke="#81428d" stroke-width="2" fill="#81428d" />
+  <text x="588" y="80" font-size="14" fill="#182635" text-anchor="start" font-weight="400">s8rand - base</text>
+  <line x1="110.0" y1="271.925" x2="216.0" y2="288.35" stroke="#81428d" stroke-width="2.4" stroke-opacity="1" stroke-dasharray="3 5" />
+  <line x1="216.0" y1="288.35" x2="322.0" y2="286.98125" stroke="#81428d" stroke-width="2.4" stroke-opacity="1" stroke-dasharray="3 5" />
+  <line x1="322.0" y1="286.98125" x2="534.0" y2="292.45625" stroke="#81428d" stroke-width="2.4" stroke-opacity="1" stroke-dasharray="3 5" />
+  <line x1="534.0" y1="292.45625" x2="746.0" y2="302.0375" stroke="#81428d" stroke-width="2.4" stroke-opacity="1" stroke-dasharray="3 5" />
+  <line x1="110.0" y1="292.45625" x2="110.0" y2="251.39375" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="106.0" y1="292.45625" x2="114.0" y2="292.45625" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="106.0" y1="251.39375" x2="114.0" y2="251.39375" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="110.0" cy="271.925" r="4" stroke="#81428d" stroke-width="2" fill="#81428d" />
+  <line x1="216.0" y1="312.9875" x2="216.0" y2="263.7125" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="212.0" y1="312.9875" x2="220.0" y2="312.9875" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="212.0" y1="263.7125" x2="220.0" y2="263.7125" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="216.0" cy="288.35" r="4" stroke="#81428d" stroke-width="2" fill="#81428d" />
+  <line x1="322.0" y1="312.9875" x2="322.0" y2="262.34375" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="318.0" y1="312.9875" x2="326.0" y2="312.9875" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="318.0" y1="262.34375" x2="326.0" y2="262.34375" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="322.0" cy="286.98125" r="4" stroke="#81428d" stroke-width="2" fill="#81428d" />
+  <line x1="534.0" y1="318.4625" x2="534.0" y2="265.08125" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="530.0" y1="318.4625" x2="538.0" y2="318.4625" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="530.0" y1="265.08125" x2="538.0" y2="265.08125" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="534.0" cy="292.45625" r="4" stroke="#81428d" stroke-width="2" fill="#81428d" />
+  <line x1="746.0" y1="329.4125" x2="746.0" y2="274.6625" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="742.0" y1="329.4125" x2="750.0" y2="329.4125" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <line x1="742.0" y1="274.6625" x2="750.0" y2="274.6625" stroke="#81428d" stroke-width="1.6" stroke-opacity="1" />
+  <circle cx="746.0" cy="302.0375" r="4" stroke="#81428d" stroke-width="2" fill="#81428d" />
+</svg>

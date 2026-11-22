@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xml:lang="zh-CN" width="1180" height="488" viewBox="0 0 1180 488" style="max-width: 100%; height: auto;" role="img" aria-labelledby="title description">
+  <title id="title">截断答案在续写后的去向</title>
+  <desc id="description">每行以该模型在原 token 上限时被截断的答案数为分母。</desc>
+  <style>text { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; font-variant-numeric: tabular-nums; }
+.label-halo { paint-order: stroke; stroke-width: 3; stroke-linejoin: round; }
+.fill-background { fill: #ffffff; } .stroke-background { stroke: #ffffff; }
+.fill-panel { fill: #f6f8fb; } .stroke-panel { stroke: #f6f8fb; }
+.fill-ink { fill: #182635; } .stroke-ink { stroke: #182635; }
+.fill-muted { fill: #46586a; } .stroke-muted { stroke: #46586a; }
+.fill-rule { fill: #cdd7e2; } .stroke-rule { stroke: #cdd7e2; }
+.fill-axis { fill: #65768a; } .stroke-axis { stroke: #65768a; }
+.fill-blue { fill: #006ca6; } .stroke-blue { stroke: #006ca6; }
+.fill-orange { fill: #a9460b; } .stroke-orange { stroke: #a9460b; }
+.fill-green { fill: #007561; } .stroke-green { stroke: #007561; }
+.fill-purple { fill: #81428d; } .stroke-purple { stroke: #81428d; }
+.fill-gray { fill: #57697c; } .stroke-gray { stroke: #57697c; }
+@media (prefers-color-scheme: dark) {
+.fill-background { fill: #141922; } .stroke-background { stroke: #141922; }
+.fill-panel { fill: #1d2633; } .stroke-panel { stroke: #1d2633; }
+.fill-ink { fill: #f2f5fa; } .stroke-ink { stroke: #f2f5fa; }
+.fill-muted { fill: #b7c5d5; } .stroke-muted { stroke: #b7c5d5; }
+.fill-rule { fill: #435266; } .stroke-rule { stroke: #435266; }
+.fill-axis { fill: #91a2b8; } .stroke-axis { stroke: #91a2b8; }
+.fill-blue { fill: #62c1f5; } .stroke-blue { stroke: #62c1f5; }
+.fill-orange { fill: #ffac69; } .stroke-orange { stroke: #ffac69; }
+.fill-green { fill: #68d6b8; } .stroke-green { stroke: #68d6b8; }
+.fill-purple { fill: #dc9be7; } .stroke-purple { stroke: #dc9be7; }
+.fill-gray { fill: #adbbcc; } .stroke-gray { stroke: #adbbcc; }
+}</style>
+  <rect x="0" y="0" width="1180" height="488" rx="0" class="fill-background" />
+  <text x="36" y="49" class="fill-ink" font-size="30" text-anchor="start" font-weight="650">截断答案在续写后的去向</text>
+  <text x="36" y="79" class="fill-muted" font-size="15" text-anchor="start" font-weight="400">每行以该模型在原 token 上限时被截断的答案数为分母。</text>
+  <rect x="36" y="101" width="22" height="12" rx="2" class="fill-green" />
+  <text x="67" y="111" class="fill-ink" font-size="14" text-anchor="start" font-weight="400">续写后答对</text>
+  <rect x="185" y="101" width="22" height="12" rx="2" class="fill-orange" />
+  <text x="216" y="111" class="fill-ink" font-size="14" text-anchor="start" font-weight="400">续写后答错</text>
+  <rect x="334" y="101" width="22" height="12" rx="2" class="fill-gray" />
+  <text x="365" y="111" class="fill-ink" font-size="14" text-anchor="start" font-weight="400">仍未答完</text>
+  <text x="222.0" y="148" class="fill-muted" font-size="12" text-anchor="middle" font-weight="400">0%</text>
+  <line x1="222.0" y1="158" x2="222.0" y2="422" class="stroke-rule" stroke-width="1" stroke-dasharray="3 4" />
+  <text x="452.5" y="148" class="fill-muted" font-size="12" text-anchor="middle" font-weight="400">25%</text>
+  <line x1="452.5" y1="158" x2="452.5" y2="422" class="stroke-rule" stroke-width="1" stroke-dasharray="3 4" />
+  <text x="683.0" y="148" class="fill-muted" font-size="12" text-anchor="middle" font-weight="400">50%</text>
+  <line x1="683.0" y1="158" x2="683.0" y2="422" class="stroke-rule" stroke-width="1" stroke-dasharray="3 4" />
+  <text x="913.5" y="148" class="fill-muted" font-size="12" text-anchor="middle" font-weight="400">75%</text>
+  <line x1="913.5" y1="158" x2="913.5" y2="422" class="stroke-rule" stroke-width="1" stroke-dasharray="3 4" />
+  <text x="1144.0" y="148" class="fill-muted" font-size="12" text-anchor="middle" font-weight="400">100%</text>
+  <line x1="1144.0" y1="158" x2="1144.0" y2="422" class="stroke-rule" stroke-width="1" stroke-dasharray="3 4" />
+  <text x="36" y="203" class="fill-ink" font-size="19" text-anchor="start" font-weight="650">Qwen3-1.7B</text>
+  <text x="683.0" y="202" class="fill-muted" font-size="12" text-anchor="middle" font-weight="400">续写数据缺失或计数无效</text>
+  <text x="36" y="289" class="fill-ink" font-size="19" text-anchor="start" font-weight="650">Qwen3-4B</text>
+  <text x="683.0" y="288" class="fill-muted" font-size="12" text-anchor="middle" font-weight="400">续写数据缺失或计数无效</text>
+  <text x="36" y="375" class="fill-ink" font-size="19" text-anchor="start" font-weight="650">Qwen3-8B</text>
+  <text x="683.0" y="374" class="fill-muted" font-size="12" text-anchor="middle" font-weight="400">续写数据缺失或计数无效</text>
+  <text x="36" y="465" class="fill-muted" font-size="13" text-anchor="start" font-weight="400">答错数为续写后已答完数减答对数。括号内为答案数。</text>
+</svg>

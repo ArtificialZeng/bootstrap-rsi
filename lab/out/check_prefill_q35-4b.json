@@ -1,0 +1,62 @@
+[
+ {
+  "pid": "test/counting_and_probability/1014.json",
+  "n_ctx": 776,
+  "max_abs_dlogit": 0.193359375,
+  "kl": 1.8886981933974312e-06,
+  "same_top20": false,
+  "same_argmax": true,
+  "p_top_step": 0.9999313354492188,
+  "p_top_prefill": 0.99993896484375
+ },
+ {
+  "pid": "test/precalculus/1300.json",
+  "n_ctx": 822,
+  "max_abs_dlogit": 0.169921875,
+  "kl": -6.37329335972936e-08,
+  "same_top20": true,
+  "same_argmax": true,
+  "p_top_step": 1.0,
+  "p_top_prefill": 1.0
+ },
+ {
+  "pid": "test/intermediate_algebra/1555.json",
+  "n_ctx": 783,
+  "max_abs_dlogit": 0.46875,
+  "kl": -2.535333054609623e-12,
+  "same_top20": true,
+  "same_argmax": true,
+  "p_top_step": 1.0,
+  "p_top_prefill": 1.0
+ },
+ {
+  "pid": "test/algebra/1937.json",
+  "n_ctx": 749,
+  "max_abs_dlogit": 0.1875,
+  "kl": 4.887265276920516e-07,
+  "same_top20": false,
+  "same_argmax": true,
+  "p_top_step": 0.8112190961837769,
+  "p_top_prefill": 0.8112190961837769
+ },
+ {
+  "pid": "test/prealgebra/1742.json",
+  "n_ctx": 758,
+  "max_abs_dlogit": 0.3359375,
+  "kl": 2.0729964511460863e-13,
+  "same_top20": true,
+  "same_argmax": true,
+  "p_top_step": 1.0,
+  "p_top_prefill": 1.0
+ },
+ {
+  "pid": "test/intermediate_algebra/558.json",
+  "n_ctx": 832,
+  "max_abs_dlogit": 0.1875,
+  "kl": -9.022796376711995e-08,
+  "same_top20": true,
+  "same_argmax": true,
+  "p_top_step": 1.0,
+  "p_top_prefill": 1.0
+ }
+]

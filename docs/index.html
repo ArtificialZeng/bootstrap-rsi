@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="margin:0">
+<title>自改权重复现报告</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column (max 760px); charts and tables sit in the same column, wide tables scroll inside their own box. */
+:root {
+  --bg: #fcfcfb; --panel: #f2f4f6; --ink: #14171a; --ink-2: #4c5560; --ink-3: #74808c; --line: #e1e5e9;
+  --s-base: #6b7580; --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --accent: #1c5cab;
+  --sans: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1a1a19; --panel: #242628; --ink: #eef0f2; --ink-2: #b6bec7; --ink-3: #8a949e; --line: #35393e;
+  --s-base: #98a2ad; --s1: #3987e5; --s2: #d95926; --s3: #199e70; --accent: #86b6ef; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #1a1a19; --panel: #242628; --ink: #eef0f2; --ink-2: #b6bec7; --ink-3: #8a949e; --line: #35393e;
+  --s-base: #98a2ad; --s1: #3987e5; --s2: #d95926; --s3: #199e70; --accent: #86b6ef; color-scheme: dark }
+
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.75;
+  padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.page { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px; }
+section, header { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+h1 { font-size: clamp(28px, 5.4vw, 40px); line-height: 1.25; font-weight: 600; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font-size: 21px; line-height: 1.4; font-weight: 600; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.eyebrow { font-size: 13px; color: var(--ink-3); letter-spacing: 0.06em; }
+.lede { font-size: 18px; color: var(--ink-2); }
+.meta { font-size: 13px; color: var(--ink-3); }
+.num, td.n, th.n { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.keys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.key { padding: 18px 16px 18px 0; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.key + .key { padding-left: 16px; border-left: 1px solid var(--line); }
+.key b { font-family: var(--mono); font-size: 28px; font-weight: 500; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.key span { font-size: 13.5px; color: var(--ink-2); line-height: 1.55; }
+@media (max-width: 600px) { .keys { grid-template-columns: 1fr; } .key + .key { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); } }
+
+figure { margin: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+figcaption { font-size: 13px; color: var(--ink-3); line-height: 1.6; }
+.fig-title { font-weight: 600; font-size: 16px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--ink-2); }
+.legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+.chart { position: relative; width: 100%; }
+.chart svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
+.chart text { font-family: var(--mono); font-size: 12px; fill: var(--ink-3); }
+.chart text.lab { font-family: var(--sans); fill: var(--ink); font-size: 12.5px; }
+.tip { position: absolute; top: 0; left: 0; pointer-events: none; background: var(--bg); border: 1px solid var(--line); border-radius: 6px;
+  padding: 8px 10px; font-size: 12.5px; line-height: 1.6; box-shadow: 0 4px 14px rgb(0 0 0 / 0.12); white-space: nowrap; z-index: 2; }
+.tip b { font-family: var(--mono); font-weight: 500; }
+.tip i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.tip .t { color: var(--ink-3); font-family: var(--mono); }
+
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 500; color: var(--ink-3); font-size: 13px; white-space: nowrap; }
+td.n, th.n { text-align: right; padding-right: 16px; white-space: nowrap; }
+tr.hl td { font-weight: 600; }
+ul, ol { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 8px; }
+.note { background: var(--panel); border-radius: 8px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; font-size: 15px; }
+.note h3 { margin: 0; font-size: 15px; font-weight: 600; }
+.steps { list-style: none; padding: 0; gap: 10px; }
+.steps li { display: grid; grid-template-columns: max-content 1fr; gap: 14px; }
+.steps time { font-family: var(--mono); font-size: 13px; color: var(--ink-3); padding-top: 2px; white-space: nowrap; }
+details summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
+details .scroll { margin-top: 12px; }
+footer { font-size: 13px; color: var(--ink-3); border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+
+<div class="page">
+<header>
+  <div class="eyebrow">复现报告 · Qwen3.5-4B · MATH-500 留出 400 题</div>
+  <h1>模型改自己的权重涨了分，这些分从哪里来</h1>
+  <p class="lede">论文《Language Models Can Rewrite Their Own Weights》报告：Qwen3.5-27B 不经训练改写自身权重，在 490 道题上提高 6.6 个点。我们把论文里那条编辑搬到同家族的 4B 模型上，用论文的 16,384 token 预算重测，提分 <span class="num" data-f="edit16"></span> 个点，预设检验通过。提分几乎全部来自更少的回答被截断。一句提示词在紧预算下的提分是编辑的十几倍，到论文的预算时优势消失。</p>
+  <p class="meta">数据生成于 <span data-f="built"></span>。仍在运行：<span data-f="pending"></span>。</p>
+</header>
+
+<div class="keys">
+  <div class="key"><b data-f="k1"></b><span>编辑对基线，16,384 token，两个种子合并（95% 区间 <span class="num" data-f="k1ci"></span>）。论文在 27B 上是 +6.6。</span></div>
+  <div class="key"><b data-f="k2"></b><span>一句提示词对基线的提分，从 4,096 token 到 16,384 token。</span></div>
+  <div class="key"><b data-f="k3"></b><span>16,384 档，编辑组逐题成绩变化里属于"截断 ↔ 答对"的比例。剩下的是答对变答错。</span></div>
+</div>
+
+<section>
+  <h2>预算放宽后编辑才显出效果，提示词赢在紧预算</h2>
+  <p>每个回答先以 4,096 token 为上限生成，被截断的回答带着各自的权重从原来的 token 前缀续写到 8,192，再续写到 16,384。到上限还没给出答案的回答计错，这是论文的评分规则。</p>
+  <figure>
+    <div class="fig-title">准确率随 token 上限的变化</div>
+    <div class="legend" id="lg1"></div>
+    <div class="chart" id="c1"></div>
+    <figcaption>基线和编辑各有两个种子，线是两个种子的平均，色带是两个种子之间的范围。提示词和随机符号对照各一个种子。4,096、8,192、16,384 是实际生成的档位，中间的点是把同一批回答在该长度截住后重新计分。</figcaption>
+  </figure>
+  <figure>
+    <div class="fig-title">相对基线的提分（百分点）</div>
+    <div class="legend" id="lg2"></div>
+    <div class="chart" id="c2"></div>
+    <figcaption>逐题配对差值，基线取两个种子的平均；色带是 95% 区间。16,384 处编辑的那个点是唯一的预设检验，其余各点是未做多重比较校正的探索性结果。</figcaption>
+  </figure>
+  <div class="scroll"><table id="t-main"></table></div>
+</section>
+
+<section>
+  <h2>预设检验是怎么定的</h2>
+  <p>8,192 档先出结果时，编辑高出 5.1 个点，名义 p=0.0044。但那张表里有 60 项比较，独立统计复核按 Holm 校正后这一项不显著；同一个未改的模型只换随机种子，在 8,192 档也能差 4.5 个点。所以 8,192 的结果只算探索，结论交给 16,384 档的一项预设检验。</p>
+  <ol class="steps">
+    <li><time>11-22 06:20</time><span>写下检验：两个种子合并的"编辑 − 基线"，逐题配对 t 检验，双侧 α=0.05。此时没有任何 16,384 的结果。</span></li>
+    <li><time>11-22 15:02</time><span>种子 1000 跑完并被查看：<span class="num" data-f="s1000"></span>。补记写明这一半已经看过，检验不变。</span></li>
+    <li><time>11-22 21:24</time><span>种子 2000 跑完：<span class="num" data-f="s2000"></span>，方向一致，单独不显著。</span></li>
+    <li><time>11-22 23:49</time><span>合并两个种子：<b><span class="num" data-f="pooled"></span></b>，通过。</span></li>
+  </ol>
+</section>
+
+<section>
+  <h2>提分来自少截断，不是把答完的题做得更对</h2>
+  <p>把每道题在基线和编辑下的结果配对，只有三种状态：到上限被截断、答完但答错、答对。16,384 档的逐题变化如下。</p>
+  <div class="scroll"><table id="t-tr"></table></div>
+  <p>基线两个种子里没有一条"答完但答错"的回答，编辑组两个种子共 <span class="num" data-f="fw"></span> 条。也就是说，模型只要在上限内说完，几乎总是对的；编辑改变的是有多少回答能说完。这和论文自己的说法一致，论文 §3.6 和附录 E.9 已经把提分与截断减少联系起来。</p>
+  <div class="note">
+    <h3>提示词和编辑管的是不同长度的回答（种子 1000，16,384 档）</h3>
+    <div class="scroll"><table id="t-lv"></table></div>
+    <p>提示词把答完的回答缩短了将近一半，简单题更快答完，但最难的 5 级题截断反而变多。编辑几乎不改变回答长度的中位数，减少的是长回答的截断，两档难度都有。仍被截断的回答里有三到五成在重复打转，编辑没有减少这部分。</p>
+  </div>
+</section>
+
+<section>
+  <h2>随机改动不行，方向有内容</h2>
+  <p>论文的编辑是把所有线性注意力层的 <span class="num">dt_bias</span> 统一加 0.5。对照组改同样的元素、同样的幅度，但每个元素随机取 +0.5 或 −0.5。<span data-f="rand"></span> 这个对照只抽了一套随机符号，第二套在排队。</p>
+</section>
+
+<section>
+  <h2>1.7B 上的另一种编辑没有复现</h2>
+  <p>在 Qwen3-1.7B 上我们自己构造了一条编辑：从某层的输出矩阵里扣掉"被截断的回答"与"答完的回答"隐藏状态之差的方向。选参数的 40 道练习题上它高 7.5 个点，换到 400 道留出题上只剩 0.7 个点，和随机方向、和只换种子分不开。同样的预算下，一句提示词高 11.5 个点。</p>
+  <div class="scroll"><table id="t-small"></table></div>
+</section>
+
+<section>
+  <h2>还没做到的</h2>
+  <ul>
+    <li>只复现了"这条编辑有效"。论文的核心主张是模型自己找到这条编辑，这一步还没有复现，Qwen3-8B 的自改权重会话在排队。</li>
+    <li>模型是 4B，论文是 27B；题目是 MATH-500 的 400 道留出题，论文是另一个题集的 490 道题。</li>
+    <li>每题每个种子 1 个回答、共 2 个种子，论文是每题 8 个回答。种子 2000 单独看不显著。</li>
+    <li>8,192 和 16,384 是分段续写的结果。续写与一次生成到底是否等价只做了有限检查，专门的对照实验在排队。</li>
+    <li>提示词目前只有一个种子，所以"提示词在 16,384 档落后编辑"还不能下结论，第二个种子在排队。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>方法</h2>
+  <ul>
+    <li>模型：Qwen3.5-4B（含 Gated DeltaNet 线性注意力层，与论文的 27B 同家族），MLX，一台 128 GB 的 Mac。</li>
+    <li>题目：MATH-500 随机划分为 100 道练习题和 400 道留出题，这里的数字全部来自留出题。</li>
+    <li>评分：到上限的回答计错；其余取思考结束后最后一个 <span class="num">\boxed{}</span>，用 math_verify 判等价。</li>
+    <li>采样：温度 0.6，top-p 0.95，top-k 20。</li>
+    <li>统计：单种子比较用精确符号检验和按题重抽样区间；两种子比较先对每题取两个种子的平均，再做配对 t 检验。</li>
+    <li>复核：统计由另一个模型从原始回答文件独立重算，并人工抽查 15 条答完的回答，全部与标准答案等价。</li>
+  </ul>
+  <details>
+    <summary>图中数据的表格</summary>
+    <div class="scroll"><table id="t-data"></table></div>
+  </details>
+</section>
+
+<footer>被检验的论文：arXiv 2611.21885，<a href="https://arxiv.org/abs/2611.21885">Language Models Can Rewrite Their Own Weights</a>。本页是独立复现的中期报告，数字随后续实验更新。</footer>
+</div>
+
+<script>
+const D = {"caps":[4096,5120,6144,7168,8192,9216,10240,11264,12288,13312,14336,15360,16384],"arms":{"base":{"4096":{"acc":0.2475,"trunc":0.7525,"fw":0,"tpc":14705.020202020201},"5120":{"acc":0.305,"trunc":0.695,"fw":0,"tpc":14389.61475409836},"6144":{"acc":0.365,"trunc":0.635,"fw":0,"tpc":13897.397260273972},"7168":{"acc":0.42,"trunc":0.58,"fw":0,"tpc":13552.214285714286},"8192":{"acc":0.455,"trunc":0.545,"fw":0,"tpc":13772.73076923077},"9216":{"acc":0.5,"trunc":0.5,"fw":0,"tpc":13594.095},"10240":{"acc":0.535,"trunc":0.465,"fw":0,"tpc":13637.392523364486},"11264":{"acc":0.5675,"trunc":0.4325,"fw":0,"tpc":13660.599118942731},"12288":{"acc":0.5825,"trunc":0.4175,"fw":0,"tpc":14052.283261802575},"13312":{"acc":0.605,"trunc":0.395,"fw":0,"tpc":14216.809917355371},"14336":{"acc":0.6275,"trunc":0.3725,"fw":0,"tpc":14333.334661354582},"15360":{"acc":0.655,"trunc":0.345,"fw":0,"tpc":14295.19465648855},"16384":{"acc":0.6825,"trunc":0.3175,"fw":0,"tpc":14217.51282051282}},"reseed":{"4096":{"acc":0.255,"trunc":0.745,"fw":0,"tpc":14438.803921568628},"5120":{"acc":0.315,"trunc":0.685,"fw":0,"tpc":14004.380952380952},"6144":{"acc":0.3975,"trunc":0.6025,"fw":0,"tpc":12776.308176100629},"7168":{"acc":0.45,"trunc":0.55,"fw":0,"tpc":12583.461111111112},"8192":{"acc":0.5,"trunc":0.5,"fw":0,"tpc":12397.56},"9216":{"acc":0.525,"trunc":0.475,"fw":0,"tpc":12759.271428571428},"10240":{"acc":0.55,"trunc":0.45,"fw":0,"tpc":13040.354545454546},"11264":{"acc":0.5675,"trunc":0.4325,"fw":0,"tpc":13434.643171806167},"12288":{"acc":0.595,"trunc":0.405,"fw":0,"tpc":13535.64705882353},"13312":{"acc":0.63,"trunc":0.37,"fw":0,"tpc":13411.496031746032},"14336":{"acc":0.66,"trunc":0.34,"fw":0,"tpc":13357.170454545454},"15360":{"acc":0.68,"trunc":0.32,"fw":0,"tpc":13459.941176470587},"16384":{"acc":0.7,"trunc":0.3,"fw":0,"tpc":13524.585714285715}},"s8":{"4096":{"acc":0.2575,"trunc":0.7425,"fw":0,"tpc":14271.601941747573},"5120":{"acc":0.345,"trunc":0.655,"fw":0,"tpc":12725.891304347826},"6144":{"acc":0.4125,"trunc":0.5875,"fw":0,"tpc":12192.636363636364},"7168":{"acc":0.4675,"trunc":0.5325,"fw":0,"tpc":11993.35294117647},"8192":{"acc":0.51,"trunc":0.49,"fw":0,"tpc":12023.950980392157},"9216":{"acc":0.5475,"trunc":0.4525,"fw":0,"tpc":12082.630136986301},"10240":{"acc":0.58,"trunc":0.42,"fw":0,"tpc":12175.379310344828},"11264":{"acc":0.6175,"trunc":0.3825,"fw":0,"tpc":12097.17004048583},"12288":{"acc":0.6425,"trunc":0.355,"fw":1,"tpc":12213.081712062256},"13312":{"acc":0.6625,"trunc":0.335,"fw":1,"tpc":12378.324528301886},"14336":{"acc":0.6925,"trunc":0.305,"fw":1,"tpc":12321.353790613719},"15360":{"acc":0.7275,"trunc":0.27,"fw":1,"tpc":12129.185567010309},"16384":{"acc":0.7475,"trunc":0.2475,"fw":2,"tpc":12158.03678929766}},"s8@2000":{"4096":{"acc":0.255,"trunc":0.745,"fw":0,"tpc":14460.578431372549},"5120":{"acc":0.3375,"trunc":0.6625,"fw":0,"tpc":13075.962962962964},"6144":{"acc":0.435,"trunc":0.565,"fw":0,"tpc":11593.344827586207},"7168":{"acc":0.4825,"trunc":0.5175,"fw":0,"tpc":11608.79792746114},"8192":{"acc":0.5475,"trunc":0.4525,"fw":0,"tpc":11125.013698630137},"9216":{"acc":0.585,"trunc":0.415,"fw":0,"tpc":11164.589743589744},"10240":{"acc":0.615,"trunc":0.385,"fw":0,"tpc":11293.682926829268},"11264":{"acc":0.6375,"trunc":0.3625,"fw":0,"tpc":11498.462745098039},"12288":{"acc":0.67,"trunc":0.33,"fw":0,"tpc":11461.470149253732},"13312":{"acc":0.695,"trunc":0.3025,"fw":1,"tpc":11518.334532374101},"14336":{"acc":0.705,"trunc":0.2925,"fw":1,"tpc":11783.68439716312},"15360":{"acc":0.715,"trunc":0.2825,"fw":1,"tpc":12031.762237762237},"16384":{"acc":0.7325,"trunc":0.265,"fw":1,"tpc":12121.737201365188}},"s8rand":{"4096":{"acc":0.2175,"trunc":0.7825,"fw":0,"tpc":16942.045977011494},"5120":{"acc":0.2475,"trunc":0.7525,"fw":0,"tpc":18052.969696969696},"6144":{"acc":0.305,"trunc":0.695,"fw":0,"tpc":17089.237704918032},"7168":{"acc":0.3625,"trunc":0.6375,"fw":0,"tpc":16240.862068965518},"8192":{"acc":0.3975,"trunc":0.6025,"fw":0,"tpc":16405.081761006288},"9216":{"acc":0.4325,"trunc":0.5675,"fw":0,"tpc":16466.84971098266},"10240":{"acc":0.455,"trunc":0.545,"fw":0,"tpc":16910.714285714286},"11264":{"acc":0.4875,"trunc":0.5125,"fw":0,"tpc":16888.764102564102},"12288":{"acc":0.515,"trunc":0.485,"fw":0,"tpc":16979.05339805825},"13312":{"acc":0.5375,"trunc":0.4625,"fw":0,"tpc":17174.809302325582},"14336":{"acc":0.555,"trunc":0.445,"fw":0,"tpc":17469.067567567567},"15360":{"acc":0.5775,"trunc":0.4225,"fw":0,"tpc":17561.549783549784},"16384":{"acc":0.5975,"trunc":0.4025,"fw":0,"tpc":17680.748953974897}},"concise":{"4096":{"acc":0.3825,"trunc":0.6175,"fw":0,"tpc":8193.300653594772},"5120":{"acc":0.4275,"trunc":0.5725,"fw":0,"tpc":8756.777777777777},"6144":{"acc":0.47,"trunc":0.53,"fw":0,"tpc":9168.93085106383},"7168":{"acc":0.4925,"trunc":0.5075,"fw":0,"tpc":9823.350253807106},"8192":{"acc":0.535,"trunc":0.465,"fw":0,"tpc":9983.995327102804},"9216":{"acc":0.5575,"trunc":0.4425,"fw":0,"tpc":10419.026905829596},"10240":{"acc":0.5775,"trunc":0.4225,"fw":0,"tpc":10824.727272727272},"11264":{"acc":0.615,"trunc":0.385,"fw":0,"tpc":10840.142276422765},"12288":{"acc":0.64,"trunc":0.36,"fw":0,"tpc":11013.265625},"13312":{"acc":0.6575,"trunc":0.3425,"fw":0,"tpc":11271.714828897339},"14336":{"acc":0.6775,"trunc":0.3225,"fw":0,"tpc":11440.845018450185},"15360":{"acc":0.6925,"trunc":0.3075,"fw":0,"tpc":11661.685920577618},"16384":{"acc":0.705,"trunc":0.295,"fw":0,"tpc":11891.840425531915}}},"pairs":{"s8 - base":{"4096":{"d":0.01,"lo":-0.035,"hi":0.055,"p":0.7406528413457827,"w":43,"l":39},"5120":{"d":0.04,"lo":-0.01,"hi":0.0875,"p":0.12929258395357313,"w":57,"l":41},"6144":{"d":0.0475,"lo":-0.0025,"hi":0.0975,"p":0.08135304820596598,"w":63,"l":44},"7168":{"d":0.0475,"lo":-0.005,"hi":0.1,"p":0.08995433294496456,"w":66,"l":47},"8192":{"d":0.055,"lo":0.005,"hi":0.1075,"p":0.046735068193959915,"w":67,"l":45},"9216":{"d":0.0475,"lo":-0.0025,"hi":0.0975,"p":0.08135304820596598,"w":63,"l":44},"10240":{"d":0.045,"lo":-0.0075,"hi":0.095,"p":0.09824250442243807,"w":62,"l":44},"11264":{"d":0.05,"lo":-0.0025,"hi":0.1025,"p":0.06956519633623025,"w":65,"l":45},"12288":{"d":0.06,"lo":0.0075,"hi":0.1125,"p":0.02785088812566223,"w":67,"l":43},"13312":{"d":0.0575,"lo":0.0075,"hi":0.11,"p":0.034615370538186696,"w":66,"l":43},"14336":{"d":0.065,"lo":0.0125,"hi":0.1175,"p":0.020970029530035034,"w":72,"l":46},"15360":{"d":0.0725,"lo":0.02,"hi":0.125,"p":0.00996632433799534,"w":74,"l":45},"16384":{"d":0.065,"lo":0.0125,"hi":0.1175,"p":0.01776578128038713,"w":69,"l":43}},"s8@2000 - reseed":{"4096":{"d":0.0,"lo":-0.0425,"hi":0.04,"p":1.0,"w":35,"l":35},"5120":{"d":0.0225,"lo":-0.0225,"hi":0.065,"p":0.37417441760470777,"w":45,"l":36},"6144":{"d":0.0375,"lo":-0.0075,"hi":0.0825,"p":0.12839640292640084,"w":50,"l":35},"7168":{"d":0.0325,"lo":-0.0125,"hi":0.0775,"p":0.18207674694084314,"w":47,"l":34},"8192":{"d":0.0475,"lo":0.0,"hi":0.0925,"p":0.05300311301096223,"w":53,"l":34},"9216":{"d":0.06,"lo":0.015,"hi":0.1075,"p":0.014866752945626234,"w":57,"l":33},"10240":{"d":0.065,"lo":0.0175,"hi":0.1125,"p":0.011174544214771171,"w":62,"l":36},"11264":{"d":0.07,"lo":0.0225,"hi":0.1175,"p":0.005572997762164588,"w":62,"l":34},"12288":{"d":0.075,"lo":0.0275,"hi":0.1225,"p":0.002878610081200932,"w":63,"l":33},"13312":{"d":0.065,"lo":0.02,"hi":0.1125,"p":0.008045928133225093,"w":58,"l":32},"14336":{"d":0.045,"lo":0.0,"hi":0.09,"p":0.06297225703616968,"w":51,"l":33},"15360":{"d":0.035,"lo":-0.01,"hi":0.08,"p":0.15067520762630385,"w":48,"l":34},"16384":{"d":0.0325,"lo":-0.015,"hi":0.0775,"p":0.19276043534155876,"w":49,"l":36}},"reseed - base":{"4096":{"d":0.0075,"lo":-0.03,"hi":0.045,"p":0.7913664277791806,"w":30,"l":27},"5120":{"d":0.01,"lo":-0.03,"hi":0.05,"p":0.7079807541347641,"w":34,"l":30},"6144":{"d":0.0325,"lo":-0.01,"hi":0.075,"p":0.17106097355391153,"w":45,"l":32},"7168":{"d":0.03,"lo":-0.015,"hi":0.075,"p":0.22424452830608183,"w":47,"l":35},"8192":{"d":0.045,"lo":0.0,"hi":0.09,"p":0.06615259746138927,"w":52,"l":34},"9216":{"d":0.025,"lo":-0.02,"hi":0.07,"p":0.3261341711919829,"w":47,"l":37},"10240":{"d":0.015,"lo":-0.03,"hi":0.06,"p":0.5942882951469401,"w":47,"l":41},"11264":{"d":0.0,"lo":-0.045,"hi":0.045,"p":1.0,"w":42,"l":42},"12288":{"d":0.0125,"lo":-0.0325,"hi":0.0575,"p":0.6569924675863577,"w":43,"l":38},"13312":{"d":0.025,"lo":-0.0175,"hi":0.0675,"p":0.31430657986393706,"w":45,"l":35},"14336":{"d":0.0325,"lo":-0.01,"hi":0.0775,"p":0.17661055306016424,"w":46,"l":33},"15360":{"d":0.025,"lo":-0.0175,"hi":0.0675,"p":0.3018724904870079,"w":43,"l":33},"16384":{"d":0.0175,"lo":-0.0225,"hi":0.06,"p":0.47668779343427553,"w":39,"l":32}},"s8rand - base":{"4096":{"d":-0.03,"lo":-0.0675,"hi":0.0075,"p":0.1550019040032606,"w":24,"l":36},"5120":{"d":-0.0575,"lo":-0.1025,"hi":-0.015,"p":0.012812402175831373,"w":28,"l":51},"6144":{"d":-0.06,"lo":-0.105,"hi":-0.015,"p":0.013750385738502912,"w":32,"l":56},"7168":{"d":-0.0575,"lo":-0.105,"hi":-0.01,"p":0.023488002836921144,"w":36,"l":59},"8192":{"d":-0.0575,"lo":-0.105,"hi":-0.0125,"p":0.020584209038374254,"w":34,"l":57},"9216":{"d":-0.0675,"lo":-0.115,"hi":-0.02,"p":0.007313123139453615,"w":34,"l":61},"10240":{"d":-0.08,"lo":-0.1275,"hi":-0.0325,"p":0.001424496094649118,"w":32,"l":64},"11264":{"d":-0.08,"lo":-0.13,"hi":-0.0325,"p":0.0016005802102081264,"w":33,"l":65},"12288":{"d":-0.0675,"lo":-0.115,"hi":-0.0175,"p":0.007313123139453615,"w":34,"l":61},"13312":{"d":-0.0675,"lo":-0.115,"hi":-0.02,"p":0.007313123139453615,"w":34,"l":61},"14336":{"d":-0.0725,"lo":-0.1225,"hi":-0.0225,"p":0.004640654088434308,"w":35,"l":64},"15360":{"d":-0.0775,"lo":-0.125,"hi":-0.03,"p":0.0023946293575060097,"w":34,"l":65},"16384":{"d":-0.085,"lo":-0.135,"hi":-0.035,"p":0.0011086208878113386,"w":35,"l":69}},"s8 - s8rand":{"4096":{"d":0.04,"lo":-0.005,"hi":0.0825,"p":0.08878242522208005,"w":47,"l":31},"5120":{"d":0.0975,"lo":0.05,"hi":0.145,"p":7.804247056315925e-05,"w":67,"l":28},"6144":{"d":0.1075,"lo":0.0575,"hi":0.1575,"p":4.655578894552281e-05,"w":76,"l":33},"7168":{"d":0.105,"lo":0.055,"hi":0.155,"p":7.692818848583552e-05,"w":76,"l":34},"8192":{"d":0.1125,"lo":0.06,"hi":0.1625,"p":2.773113732181688e-05,"w":79,"l":34},"9216":{"d":0.115,"lo":0.0625,"hi":0.1675,"p":3.7918806329133446e-05,"w":84,"l":38},"10240":{"d":0.125,"lo":0.0725,"hi":0.1775,"p":6.909552457823492e-06,"w":86,"l":36},"11264":{"d":0.13,"lo":0.0775,"hi":0.1825,"p":4.099291097200166e-06,"w":89,"l":37},"12288":{"d":0.1275,"lo":0.075,"hi":0.18,"p":4.848718134555307e-06,"w":87,"l":36},"13312":{"d":0.125,"lo":0.07,"hi":0.1775,"p":8.274158969176748e-06,"w":87,"l":37},"14336":{"d":0.1375,"lo":0.0825,"hi":0.1925,"p":1.700505180668006e-06,"w":93,"l":38},"15360":{"d":0.15,"lo":0.095,"hi":0.205,"p":2.729862604765941e-07,"w":98,"l":38},"16384":{"d":0.15,"lo":0.095,"hi":0.205,"p":2.1932825010029367e-07,"w":97,"l":37}},"concise - base":{"4096":{"d":0.135,"lo":0.0925,"hi":0.1775,"p":1.1349339471612945e-09,"w":68,"l":14},"5120":{"d":0.1225,"lo":0.075,"hi":0.1675,"p":4.757482385242055e-07,"w":72,"l":23},"6144":{"d":0.105,"lo":0.0575,"hi":0.1525,"p":2.6402449757572137e-05,"w":70,"l":28},"7168":{"d":0.0725,"lo":0.025,"hi":0.12,"p":0.0042258039216827616,"w":63,"l":34},"8192":{"d":0.08,"lo":0.0325,"hi":0.1275,"p":0.0016005802102081264,"w":65,"l":33},"9216":{"d":0.0575,"lo":0.0125,"hi":0.105,"p":0.022018588373923325,"w":58,"l":35},"10240":{"d":0.0425,"lo":-0.0025,"hi":0.09,"p":0.09656519729770463,"w":55,"l":38},"11264":{"d":0.0475,"lo":0.0,"hi":0.095,"p":0.064212806627131,"w":57,"l":38},"12288":{"d":0.0575,"lo":0.01,"hi":0.1075,"p":0.028089467947778154,"w":62,"l":39},"13312":{"d":0.0525,"lo":0.005,"hi":0.1025,"p":0.0482336521709971,"w":62,"l":41},"14336":{"d":0.05,"lo":0.0,"hi":0.1,"p":0.06446359198949365,"w":63,"l":43},"15360":{"d":0.0375,"lo":-0.01,"hi":0.0875,"p":0.16327926185142783,"w":58,"l":43},"16384":{"d":0.0225,"lo":-0.025,"hi":0.07,"p":0.4167748410890994,"w":53,"l":44}},"concise - s8":{"4096":{"d":0.125,"lo":0.0825,"hi":0.1675,"p":3.495893514797302e-08,"w":67,"l":17},"5120":{"d":0.0825,"lo":0.0375,"hi":0.125,"p":0.0003783427631607787,"w":58,"l":25},"6144":{"d":0.0575,"lo":0.015,"hi":0.1,"p":0.011672721024383069,"w":50,"l":27},"7168":{"d":0.025,"lo":-0.02,"hi":0.0725,"p":0.3428331194207878,"w":50,"l":40},"8192":{"d":0.025,"lo":-0.022562499999999944,"hi":0.075,"p":0.37294366808362983,"w":56,"l":46},"9216":{"d":0.01,"lo":-0.0375,"hi":0.06,"p":0.7643534344026671,"w":52,"l":48},"10240":{"d":-0.0025,"lo":-0.0525,"hi":0.0475,"p":1.0,"w":52,"l":53},"11264":{"d":-0.0025,"lo":-0.05256249999999994,"hi":0.0475,"p":1.0,"w":53,"l":54},"12288":{"d":-0.0025,"lo":-0.0525,"hi":0.0475,"p":1.0,"w":51,"l":52},"13312":{"d":-0.005,"lo":-0.055,"hi":0.045,"p":0.921948827626431,"w":51,"l":53},"14336":{"d":-0.015,"lo":-0.065,"hi":0.035,"p":0.624143515844679,"w":49,"l":55},"15360":{"d":-0.035,"lo":-0.085,"hi":0.0175,"p":0.21913114749778415,"w":49,"l":63},"16384":{"d":-0.0425,"lo":-0.0925,"hi":0.0075,"p":0.11799998150585851,"w":44,"l":61}},"concise - reseed":{"4096":{"d":0.1275,"lo":0.085,"hi":0.17,"p":1.3888556445417404e-08,"w":67,"l":16},"5120":{"d":0.1125,"lo":0.07,"hi":0.155,"p":3.5883588815862885e-07,"w":62,"l":17},"6144":{"d":0.0725,"lo":0.03,"hi":0.115,"p":0.0010795155066662817,"w":52,"l":23},"7168":{"d":0.0425,"lo":0.0,"hi":0.085,"p":0.060370037339928545,"w":45,"l":28},"8192":{"d":0.035,"lo":-0.0125,"hi":0.0825,"p":0.16544051293398976,"w":51,"l":37},"9216":{"d":0.0325,"lo":-0.0125,"hi":0.08,"p":0.1979791406725175,"w":50,"l":37},"10240":{"d":0.0275,"lo":-0.0175,"hi":0.0725,"p":0.2779992890805517,"w":48,"l":37},"11264":{"d":0.0475,"lo":0.0025,"hi":0.095,"p":0.05300311301096223,"w":53,"l":34},"12288":{"d":0.045,"lo":-0.0025,"hi":0.0925,"p":0.07897554800108206,"w":56,"l":38},"13312":{"d":0.0275,"lo":-0.02,"hi":0.075,"p":0.30488519070227593,"w":53,"l":42},"14336":{"d":0.0175,"lo":-0.03,"hi":0.0675,"p":0.5467134835988139,"w":53,"l":46},"15360":{"d":0.0125,"lo":-0.0375,"hi":0.0625,"p":0.6878853435796918,"w":52,"l":47},"16384":{"d":0.005,"lo":-0.0425,"hi":0.0525,"p":0.9170405196524724,"w":47,"l":45}},"concise - s8@2000":{"4096":{"d":0.1275,"lo":0.085,"hi":0.17,"p":8.625605549980351e-09,"w":66,"l":15},"5120":{"d":0.09,"lo":0.0475,"hi":0.1325,"p":8.715478657320524e-05,"w":59,"l":23},"6144":{"d":0.035,"lo":-0.0075,"hi":0.08,"p":0.14053828626952242,"w":46,"l":32},"7168":{"d":0.01,"lo":-0.035,"hi":0.055,"p":0.7406528413457827,"w":43,"l":39},"8192":{"d":-0.0125,"lo":-0.06,"hi":0.0325,"p":0.6718086491746105,"w":42,"l":47},"9216":{"d":-0.0275,"lo":-0.0725,"hi":0.02,"p":0.294469784568533,"w":40,"l":51},"10240":{"d":-0.0375,"lo":-0.0825,"hi":0.01,"p":0.14617702864715262,"w":39,"l":54},"11264":{"d":-0.0225,"lo":-0.0675,"hi":0.025,"p":0.40692436804613397,"w":42,"l":51},"12288":{"d":-0.03,"lo":-0.0775,"hi":0.0175,"p":0.25644234893296985,"w":41,"l":53},"13312":{"d":-0.0375,"lo":-0.085,"hi":0.01,"p":0.15051806389022943,"w":40,"l":55},"14336":{"d":-0.0275,"lo":-0.075,"hi":0.02,"p":0.3099335342390071,"w":43,"l":54},"15360":{"d":-0.0225,"lo":-0.07,"hi":0.0275,"p":0.42616001546699406,"w":46,"l":55},"16384":{"d":-0.0275,"lo":-0.075,"hi":0.02006249999999909,"p":0.3148798910376227,"w":44,"l":55}},"s8 (2 seeds) - base (2 seeds)":{"4096":{"d":0.005,"lo":-0.024726100438681786,"hi":0.03472610043868179,"p":0.7410646222869641,"w":51,"l":47},"5120":{"d":0.03125,"lo":-0.0029708938287720046,"hi":0.065470893828772,"p":0.07336972796107827,"w":72,"l":54},"6144":{"d":0.0425,"lo":0.00866405885832703,"hi":0.07633594114167297,"p":0.013954654859410423,"w":76,"l":53},"7168":{"d":0.04,"lo":0.005956252845955433,"hi":0.07404374715404458,"p":0.021404271987326695,"w":75,"l":56},"8192":{"d":0.05125,"lo":0.01603859626848319,"hi":0.08646140373151681,"p":0.004439779923434166,"w":84,"l":56},"9216":{"d":0.05375,"lo":0.019094894927140615,"hi":0.08840510507285938,"p":0.002447867198999947,"w":85,"l":55},"10240":{"d":0.055,"lo":0.019929648752298676,"hi":0.09007035124770132,"p":0.0021907763363778797,"w":90,"l":58},"11264":{"d":0.06,"lo":0.025182592392659693,"hi":0.09481740760734031,"p":0.0007745234946852259,"w":89,"l":54},"12288":{"d":0.0675,"lo":0.031112238978125803,"hi":0.1038877610218742,"p":0.0003006706295342467,"w":88,"l":54},"13312":{"d":0.06125,"lo":0.02584997541249913,"hi":0.09665002458750087,"p":0.000737870953331875,"w":88,"l":53},"14336":{"d":0.055,"lo":0.019245818521617497,"hi":0.0907541814783825,"p":0.002654476284383884,"w":85,"l":56},"15360":{"d":0.05375,"lo":0.017556793319010194,"hi":0.0899432066809898,"p":0.003703874896787446,"w":88,"l":61},"16384":{"d":0.04875,"lo":0.011990831717605538,"hi":0.08550916828239447,"p":0.009470511395041346,"w":81,"l":62}},"concise - base (2 seeds)":{"4096":{"d":0.13125,"lo":0.09270292109604339,"hi":0.16979707890395662,"p":7.391059241355819e-11,"w":88,"l":23},"5120":{"d":0.1175,"lo":0.07768038526598181,"hi":0.15731961473401818,"p":1.3429600103795384e-08,"w":90,"l":29},"6144":{"d":0.08875,"lo":0.04935166155148102,"hi":0.12814833844851897,"p":1.2268111432508784e-05,"w":90,"l":35},"7168":{"d":0.0575,"lo":0.018386000363924966,"hi":0.09661399963607503,"p":0.004062315732013923,"w":81,"l":45},"8192":{"d":0.0575,"lo":0.016276016501764967,"hi":0.09872398349823504,"p":0.006379354216832008,"w":87,"l":49},"9216":{"d":0.045,"lo":0.0043639623161996835,"hi":0.08563603768380032,"p":0.030062269441378815,"w":83,"l":49},"10240":{"d":0.035,"lo":-0.005132340015697921,"hi":0.07513234001569793,"p":0.0872109070221828,"w":81,"l":52},"11264":{"d":0.0475,"lo":0.006594455645662245,"hi":0.08840554435433776,"p":0.02296404851671264,"w":84,"l":49},"12288":{"d":0.05125,"lo":0.008293715132201715,"hi":0.09420628486779828,"p":0.019490820832996882,"w":87,"l":51},"13312":{"d":0.04,"lo":-0.0035610382992184927,"hi":0.08356103829921849,"p":0.07179454237173319,"w":85,"l":54},"14336":{"d":0.03375,"lo":-0.010891223070560556,"hi":0.07839122307056057,"p":0.13799071238868948,"w":87,"l":55},"15360":{"d":0.025,"lo":-0.019220360082043406,"hi":0.06922036008204341,"p":0.26704918814530354,"w":85,"l":53},"16384":{"d":0.01375,"lo":-0.02933996402092403,"hi":0.056839964020924026,"p":0.5308036880518495,"w":78,"l":52}},"concise - s8 (2 seeds)":{"4096":{"d":0.12625,"lo":0.08963108873756481,"hi":0.1628689112624352,"p":4.3987671037825355e-11,"w":98,"l":26},"5120":{"d":0.08625,"lo":0.0494990673131076,"hi":0.12300093268689238,"p":5.33578111594061e-06,"w":90,"l":40},"6144":{"d":0.04625,"lo":0.010123762800456945,"hi":0.08237623719954305,"p":0.012232252656572346,"w":80,"l":43},"7168":{"d":0.0175,"lo":-0.021209484571253337,"hi":0.05620948457125334,"p":0.374663591887941,"w":76,"l":58},"8192":{"d":0.00625,"lo":-0.03542874838141345,"hi":0.04792874838141345,"p":0.768297232237158,"w":81,"l":62},"9216":{"d":-0.00875,"lo":-0.050278867524037346,"hi":0.032778867524037344,"p":0.6789395210745307,"w":78,"l":66},"10240":{"d":-0.02,"lo":-0.06257139666694672,"hi":0.022571396666946717,"p":0.35625764503965063,"w":76,"l":71},"11264":{"d":-0.0125,"lo":-0.054670616602587846,"hi":0.02967061660258784,"p":0.5604041207009256,"w":83,"l":70},"12288":{"d":-0.01625,"lo":-0.0584799725923224,"hi":0.025979972592322396,"p":0.44980520294921844,"w":81,"l":67},"13312":{"d":-0.02125,"lo":-0.06360165139537764,"hi":0.021101651395377636,"p":0.3245313243329863,"w":80,"l":70},"14336":{"d":-0.02125,"lo":-0.06402833965138861,"hi":0.021528339651388607,"p":0.32937480370363476,"w":81,"l":69},"15360":{"d":-0.02875,"lo":-0.07301671240453794,"hi":0.015516712404537936,"p":0.20241008164952284,"w":83,"l":74},"16384":{"d":-0.035,"lo":-0.07860271154925319,"hi":0.00860271154925319,"p":0.11534553652153239,"w":77,"l":71}}},"transitions":{"s8 seed 1000":{"TC":69,"CT":42,"WC":0,"CW":1,"TW":1,"WT":0},"s8 seed 2000":{"TC":49,"CT":36,"WC":0,"CW":0,"TW":1,"WT":0},"concise":{"TC":53,"CT":44,"WC":0,"CW":0,"TW":0,"WT":0},"s8rand":{"TC":35,"CT":69,"WC":0,"CW":0,"TW":0,"WT":0}},"levels":{"base":{"l5":51,"n5":105,"rest":76,"nrest":295,"loop":41,"trunc":127,"med":5831},"s8":{"l5":42,"n5":105,"rest":57,"nrest":295,"loop":47,"trunc":99,"med":5664},"concise":{"l5":58,"n5":105,"rest":60,"nrest":295,"loop":42,"trunc":118,"med":3119}},"small":{"edit":{"acc":0.5275,"d":0.0075,"lo":-0.0225,"hi":0.0375,"w":20,"l":17},"random":{"acc":0.53,"d":0.01,"lo":-0.02,"hi":0.04,"w":20,"l":16},"concise":{"acc":0.635,"d":0.115,"lo":0.0775,"hi":0.1525,"w":54,"l":8},"reseed":{"acc":0.5525,"d":0.0325,"lo":0.0025,"hi":0.0625,"w":27,"l":14}},"built":"2026-11-23 01:31"};
+const caps = D.caps, A = D.arms, P = D.pairs, LAST = caps[caps.length - 1];
+const pct = (v, d = 1) => (100 * v).toFixed(d) + "%";
+const pts = (v, d = 1) => (v >= 0 ? "+" : "−") + Math.abs(100 * v).toFixed(d);
+const pfmt = p => p < 0.001 ? p.toExponential(1).replace("e-", "×10⁻").replace(/⁻(\d+)/, (m, n) => "⁻" + [...n].map(c => "⁰¹²³⁴⁵⁶⁷⁸⁹"[c]).join("")) : p.toFixed(p < 0.01 ? 4 : 2);
+const tok = c => c.toLocaleString("en-US");
+const has = (k, c) => A[k] && A[k][c];
+const mean = (ks, c) => ks.every(k => has(k, c)) ? ks.reduce((s, k) => s + A[k][c].acc, 0) / ks.length : null;
+const esc = s => String(s).replace(/[&<>]/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[m]));
+
+// ---- series for the two charts
+const promptArms = has("concise@2000", caps[0]) ? ["concise", "concise@2000"] : ["concise"];
+const defs = [
+  { key: "base", name: "基线", color: "var(--s-base)", arms: ["base", "reseed"] },
+  { key: "edit", name: "论文的编辑", color: "var(--s1)", arms: ["s8", "s8@2000"] },
+  { key: "prompt", name: "提示词", color: "var(--s2)", arms: promptArms },
+  { key: "rand", name: "随机符号对照", color: "var(--s3)", arms: ["s8rand"] }];
+const accSeries = defs.map(d => ({ ...d, pts: caps.filter(c => mean(d.arms, c) !== null).map(c => {
+  const vs = d.arms.map(k => A[k][c].acc);
+  return { x: c, y: 100 * mean(d.arms, c), lo: 100 * Math.min(...vs), hi: 100 * Math.max(...vs) }; }) }));
+const pairKey = { edit: "s8 (2 seeds) - base (2 seeds)",
+  prompt: P["concise (2 seeds) - base (2 seeds)"] && P["concise (2 seeds) - base (2 seeds)"][LAST] ? "concise (2 seeds) - base (2 seeds)" : "concise - base (2 seeds)" };
+const dSeries = ["edit", "prompt"].map(k => ({ ...defs.find(d => d.key === k),
+  pts: caps.filter(c => P[pairKey[k]] && P[pairKey[k]][c]).map(c => { const s = P[pairKey[k]][c]; return { x: c, y: 100 * s.d, lo: 100 * s.lo, hi: 100 * s.hi }; }) }));
+
+// ---- chart
+function chart(el, series, o) {
+  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true;
+  function draw() {
+    const W = Math.max(300, el.clientWidth), H = Math.round(Math.max(250, Math.min(360, W * 0.52)));
+    const m = { l: 40, r: W < 520 ? 100 : 142, t: 12, b: 30 };
+    const x = v => m.l + (v - caps[0]) / (LAST - caps[0]) * (W - m.l - m.r);
+    const y = v => m.t + (o.max - v) / (o.max - o.min) * (H - m.t - m.b);
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label)}">`;
+    for (const t of o.ticks) s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}" style="stroke:var(--line);stroke-width:${t === 0 && o.zero ? 1.5 : 1}"${t === 0 && o.zero ? ' stroke-dasharray="none"' : ""}/>` +
+      `<text x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${o.fmt(t)}</text>`;
+    if (o.zero) s += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(0)}" y2="${y(0)}" style="stroke:var(--ink-3);stroke-width:1"/>`;
+    for (const c of [4096, 8192, 12288, 16384]) s += `<text x="${x(c)}" y="${H - 8}" text-anchor="middle">${tok(c)}</text>`;
+    for (const se of series) if (se.pts.length > 1 && se.pts.some(p => p.hi - p.lo > 0.01))
+      s += `<path d="M${se.pts.map(p => `${x(p.x)},${y(p.hi)}`).join("L")}L${[...se.pts].reverse().map(p => `${x(p.x)},${y(p.lo)}`).join("L")}Z" style="fill:${se.color};opacity:.14;stroke:none"/>`;
+    for (const se of series) if (se.pts.length)
+      s += `<path d="M${se.pts.map(p => `${x(p.x)},${y(p.y)}`).join("L")}" style="fill:none;stroke:${se.color};stroke-width:2;stroke-linejoin:round;stroke-linecap:round"/>`;
+    // end labels, pushed apart so they never overlap
+    const labs = series.filter(se => se.pts.length).map(se => { const p = se.pts[se.pts.length - 1]; return { se, p, ly: y(p.y) }; }).sort((a, b) => a.ly - b.ly);
+    for (let i = 1; i < labs.length; i++) if (labs[i].ly - labs[i - 1].ly < 17) labs[i].ly = labs[i - 1].ly + 17;
+    for (let i = labs.length - 1; i >= 0; i--) { const cap = H - m.b - 2 - (labs.length - 1 - i) * 17; if (labs[i].ly > cap) labs[i].ly = cap; }
+    for (const { se, p, ly } of labs) {
+      const mark = o.ring && se.key === o.ring && p.x === LAST;
+      s += `<circle cx="${x(p.x)}" cy="${y(p.y)}" r="${mark ? 5 : 4}" style="fill:${mark ? "var(--bg)" : se.color};stroke:${mark ? se.color : "var(--bg)"};stroke-width:2"/>`;
+      const lx = Math.min(x(p.x) + 10, W - m.r + 10);
+      if (Math.abs(ly - y(p.y)) > 3) s += `<line x1="${x(p.x) + 5}" y1="${y(p.y)}" x2="${lx - 2}" y2="${ly}" style="stroke:var(--line);stroke-width:1"/>`;
+      s += `<text class="lab" x="${lx}" y="${ly + 4}">${esc(W < 520 ? se.name.replace("论文的", "").replace("对照", "") : se.name)} ${o.end(p.y)}</text>`;
+    }
+    s += `<g class="hover" hidden><line y1="${m.t}" y2="${H - m.b}" style="stroke:var(--ink-3);stroke-width:1"/></g></svg>`;
+    el.innerHTML = s; el.appendChild(tip);
+    const svg = el.querySelector("svg"), g = svg.querySelector(".hover"), vline = g.querySelector("line");
+    function move(ev) {
+      const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) * W / r.width;
+      let c = caps.reduce((a, b) => Math.abs(x(b) - px) < Math.abs(x(a) - px) ? b : a);
+      g.removeAttribute("hidden"); vline.setAttribute("x1", x(c)); vline.setAttribute("x2", x(c));
+      g.querySelectorAll("circle").forEach(n => n.remove());
+      let h = `<div class="t">上限 ${tok(c)} token</div>`;
+      for (const se of series) { const p = se.pts.find(q => q.x === c); if (!p) continue;
+        const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        dot.setAttribute("cx", x(c)); dot.setAttribute("cy", y(p.y)); dot.setAttribute("r", 4);
+        dot.setAttribute("style", `fill:${se.color};stroke:var(--bg);stroke-width:2`); g.appendChild(dot);
+        h += `<div><i style="background:${se.color}"></i>${esc(se.name)} <b>${o.end(p.y)}</b>${p.hi - p.lo > 0.01 ? ` <span class="t">${o.range(p)}</span>` : ""}</div>`; }
+      tip.innerHTML = h; tip.hidden = false;
+      const tx = x(c) * r.width / W, tw = tip.offsetWidth;
+      tip.style.transform = `translate(${Math.max(0, Math.min(el.clientWidth - tw, tx + 12 + tw > el.clientWidth ? tx - tw - 12 : tx + 12))}px, ${m.t}px)`;
+    }
+    svg.addEventListener("pointermove", move); svg.addEventListener("pointerdown", move);
+    svg.addEventListener("pointerleave", () => { g.setAttribute("hidden", ""); tip.hidden = true; });
+  }
+  draw(); let t; window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(draw, 120); });
+}
+const legend = (id, series, extra) => document.getElementById(id).innerHTML =
+  series.filter(s => s.pts.length).map(s => `<span><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join("") + (extra || "");
+legend("lg1", accSeries);
+chart(document.getElementById("c1"), accSeries, { min: 0, max: 80, ticks: [0, 20, 40, 60, 80], fmt: t => t + "%", end: v => v.toFixed(1) + "%",
+  range: p => `两个种子 ${p.lo.toFixed(1)}–${p.hi.toFixed(1)}`, label: "各组准确率随 token 上限的变化" });
+legend("lg2", dSeries, `<span>○ 预设检验</span>`);
+const dmax = Math.ceil(Math.max(...dSeries.flatMap(s => s.pts.map(p => p.hi))) / 5) * 5, dmin = Math.floor(Math.min(...dSeries.flatMap(s => s.pts.map(p => p.lo))) / 5) * 5;
+chart(document.getElementById("c2"), dSeries, { min: dmin, max: dmax, zero: true, ring: "edit",
+  ticks: Array.from({ length: (dmax - dmin) / 5 + 1 }, (_, i) => dmin + 5 * i), fmt: t => (t > 0 ? "+" : t < 0 ? "−" : "") + Math.abs(t),
+  end: v => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(1), range: p => `区间 ${p.lo.toFixed(1)} 到 ${p.hi.toFixed(1)}`, label: "编辑和提示词相对基线的提分随 token 上限的变化" });
+
+// ---- text and tables
+const E = P["s8 (2 seeds) - base (2 seeds)"], PR = P[pairKey.prompt], fill = (k, v) => document.querySelectorAll(`[data-f="${k}"]`).forEach(n => n.innerHTML = v);
+const ci = s => `[${pts(s.lo)}, ${pts(s.hi)}]`;
+fill("built", D.built);
+fill("edit16", (100 * E[LAST].d).toFixed(1));
+fill("k1", pts(E[LAST].d) + " 个点"); fill("k1ci", ci(E[LAST]));
+fill("k2", `${pts(PR[caps[0]].d)} → ${pts(PR[LAST].d)}`);
+const T = D.transitions, te = ["s8 seed 1000", "s8 seed 2000"].map(k => T[k]).filter(Boolean);
+const viaT = te.reduce((s, t) => s + t.TC + t.CT, 0), viaW = te.reduce((s, t) => s + t.WC + t.CW, 0);
+fill("k3", `${viaT} / ${viaT + viaW}`);
+const one = k => { const s = P[k][LAST]; return `编辑 − 基线 ${pts(s.d, 2)} 个点，${s.w} 胜 ${s.l} 负，p=${pfmt(s.p)}`; };
+fill("s1000", one("s8 - base")); fill("s2000", one("s8@2000 - reseed"));
+fill("pooled", `${pts(E[LAST].d)} 个点，95% 区间 ${ci(E[LAST])}，p=${pfmt(E[LAST].p)}`);
+fill("fw", ["s8", "s8@2000"].reduce((s, k) => s + A[k][LAST].fw, 0));
+const pend = [];
+if (!has("s8rand", LAST)) pend.push("随机符号对照的 16,384 档");
+if (!A["concise@2000"]) pend.push("提示词的第二个种子");
+if (!A["s8concise"]) pend.push("编辑加提示词的叠加组");
+pend.push("续写接缝对照", "Qwen3-8B 自改权重会话");
+fill("pending", pend.join("、"));
+const rc = has("s8rand", LAST) ? LAST : 8192, rb = P["s8rand - base"][rc], re = P["s8 - s8rand"][rc];
+fill("rand", `在 ${tok(rc)} 档，随机符号比基线低 ${Math.abs(100 * rb.d).toFixed(1)} 个点，论文的编辑比随机符号高 ${(100 * re.d).toFixed(1)} 个点（${re.w} 胜 ${re.l} 负，p=${pfmt(re.p)}，同为种子 1000）。`);
+
+const show = [4096, 8192, 12288, 16384].filter(c => caps.includes(c));
+const rows = [["基线 · 种子 1000", "base"], ["基线 · 种子 2000", "reseed"], ["论文的编辑 · 种子 1000", "s8"], ["论文的编辑 · 种子 2000", "s8@2000"],
+  ["提示词 · 种子 1000", "concise"], ["提示词 · 种子 2000", "concise@2000"], ["编辑加提示词 · 种子 1000", "s8concise"], ["随机符号对照 · 种子 1000", "s8rand"]].filter(r => A[r[1]]);
+document.getElementById("t-main").innerHTML = `<thead><tr><th>准确率</th>${show.map(c => `<th class="n">${tok(c)}</th>`).join("")}</tr></thead><tbody>` +
+  rows.map(([n, k]) => `<tr><td>${n}</td>${show.map(c => `<td class="n">${has(k, c) ? pct(A[k][c].acc) : "—"}</td>`).join("")}</tr>`).join("") +
+  `<tr class="hl"><td>编辑 − 基线（两个种子）</td>${show.map(c => `<td class="n">${pts(E[c].d)}</td>`).join("")}</tr>` +
+  `<tr class="hl"><td>提示词 − 基线</td>${show.map(c => `<td class="n">${pts(PR[c].d)}</td>`).join("")}</tr></tbody>`;
+
+const trName = { "s8 seed 1000": "编辑 · 种子 1000", "s8 seed 2000": "编辑 · 种子 2000", "concise": "提示词 · 种子 1000", "s8rand": "随机符号 · 种子 1000" };
+document.getElementById("t-tr").innerHTML = `<thead><tr><th>相对同种子基线</th><th class="n">截断 → 答对</th><th class="n">答对 → 截断</th><th class="n">答错 → 答对</th><th class="n">答对 → 答错</th><th class="n">净变化</th></tr></thead><tbody>` +
+  Object.keys(T).map(k => { const t = T[k]; return `<tr><td>${trName[k]}</td><td class="n">${t.TC}</td><td class="n">${t.CT}</td><td class="n">${t.WC}</td><td class="n">${t.CW}</td><td class="n">${(t.TC - t.CT + t.WC - t.CW > 0 ? "+" : "") + (t.TC - t.CT + t.WC - t.CW)} 题</td></tr>`; }).join("") + "</tbody>";
+
+const L = D.levels, ln = { base: "基线", s8: "论文的编辑", concise: "提示词" };
+document.getElementById("t-lv").innerHTML = `<thead><tr><th></th><th class="n">答完回答的长度中位数</th><th class="n">5 级题被截断</th><th class="n">其余题被截断</th><th class="n">截断中在打转的</th></tr></thead><tbody>` +
+  Object.keys(ln).filter(k => L[k]).map(k => `<tr><td>${ln[k]}</td><td class="n">${tok(L[k].med)} token</td><td class="n">${L[k].l5} / ${L[k].n5}</td><td class="n">${L[k].rest} / ${L[k].nrest}</td><td class="n">${L[k].loop} / ${L[k].trunc}</td></tr>`).join("") + "</tbody>";
+
+const S = D.small, sn = { edit: "方向编辑（第 6 层）", random: "随机方向，同层同强度", reseed: "不改模型，只换种子", concise: "提示词" };
+document.getElementById("t-small").innerHTML = `<thead><tr><th>Qwen3-1.7B，4,096 token，400 题</th><th class="n">准确率</th><th class="n">对基线</th><th class="n">95% 区间</th><th class="n">胜 / 负</th></tr></thead><tbody>` +
+  `<tr><td>基线</td><td class="n">52.0%</td><td class="n"></td><td class="n"></td><td class="n"></td></tr>` +
+  Object.keys(sn).filter(k => S[k]).map(k => `<tr><td>${sn[k]}</td><td class="n">${pct(S[k].acc)}</td><td class="n">${pts(S[k].d)}</td><td class="n">[${pts(S[k].lo)}, ${pts(S[k].hi)}]</td><td class="n">${S[k].w} / ${S[k].l}</td></tr>`).join("") + "</tbody>";
+
+document.getElementById("t-data").innerHTML = `<thead><tr><th class="n">上限</th>${accSeries.filter(s => s.pts.length).map(s => `<th class="n">${s.name}</th>`).join("")}${dSeries.map(s => `<th class="n">${s.name} − 基线 [95% 区间]</th>`).join("")}</tr></thead><tbody>` +
+  caps.map(c => `<tr><td class="n">${tok(c)}</td>${accSeries.filter(s => s.pts.length).map(s => { const p = s.pts.find(q => q.x === c); return `<td class="n">${p ? p.y.toFixed(1) + "%" : "—"}</td>`; }).join("")}${dSeries.map(s => { const p = s.pts.find(q => q.x === c); return `<td class="n">${p ? `${(p.y >= 0 ? "+" : "−") + Math.abs(p.y).toFixed(1)} [${p.lo.toFixed(1)}, ${p.hi.toFixed(1)}]` : "—"}</td>`; }).join("")}</tr>`).join("") + "</tbody>";
+</script>
+
+</body>
+</html>
