@@ -14,6 +14,8 @@ trajectories. s8 = the paper's session-8 edit (dt_bias +0.5 on all linear-attent
 | s8 edit (seed 2000) | 0.255 | 0.435 | 0.547 | 0.670 | 0.733 |
 | random-sign control | 0.217 | 0.305 | 0.398 | 0.515 | 0.598 |
 | concise prompt (seed 1000) | 0.383 | 0.470 | 0.535 | 0.640 | 0.705 |
+| concise prompt (seed 2000) | 0.375 | — | — | — | — |
+| s8 edit + concise prompt | 0.372 | — | — | — | — |
 
 ## Finished-but-wrong answers (count out of 400)
 
@@ -25,6 +27,8 @@ trajectories. s8 = the paper's session-8 edit (dt_bias +0.5 on all linear-attent
 | s8 edit (seed 2000) | 0 | 0 | 0 | 0 | 1 |
 | random-sign control | 0 | 0 | 0 | 0 | 0 |
 | concise prompt (seed 1000) | 0 | 0 | 0 | 0 | 0 |
+| concise prompt (seed 2000) | 0 | — | — | — | — |
+| s8 edit + concise prompt | 0 | — | — | — | — |
 
 ## Output tokens per correct answer
 
@@ -36,6 +40,8 @@ trajectories. s8 = the paper's session-8 edit (dt_bias +0.5 on all linear-attent
 | s8 edit (seed 2000) | 14461 | 11593 | 11125 | 11461 | 12122 |
 | random-sign control | 16942 | 17089 | 16405 | 16979 | 17681 |
 | concise prompt (seed 1000) | 8193 | 9169 | 9984 | 11013 | 11892 |
+| concise prompt (seed 2000) | 8432 | — | — | — | — |
+| s8 edit + concise prompt | 8630 | — | — | — | — |
 
 ## Differences in accuracy points [95% CI], problems won/lost, two-sided p (nominal, uncorrected)
 
@@ -50,9 +56,17 @@ trajectories. s8 = the paper's session-8 edit (dt_bias +0.5 on all linear-attent
 | concise - s8 | +12.5 [+8.2, +16.8], 67/17, p=3.5e-08 | +5.8 [+1.5, +10.0], 50/27, p=0.012 | +2.5 [-2.3, +7.5], 56/46, p=0.37 | -0.2 [-5.2, +4.8], 51/52, p=1 | -4.2 [-9.2, +0.8], 44/61, p=0.12 |
 | concise - reseed | +12.8 [+8.5, +17.0], 67/16, p=1.4e-08 | +7.2 [+3.0, +11.5], 52/23, p=0.0011 | +3.5 [-1.2, +8.2], 51/37, p=0.17 | +4.5 [-0.2, +9.2], 56/38, p=0.079 | +0.5 [-4.2, +5.2], 47/45, p=0.92 |
 | concise - s8@2000 | +12.8 [+8.5, +17.0], 66/15, p=8.6e-09 | +3.5 [-0.8, +8.0], 46/32, p=0.14 | -1.2 [-6.0, +3.2], 42/47, p=0.67 | -3.0 [-7.8, +1.8], 41/53, p=0.26 | -2.8 [-7.5, +2.0], 44/55, p=0.31 |
+| concise@2000 - reseed | +12.0 [+7.8, +16.2], 64/16, p=5.9e-08 | — | — | — | — |
+| concise@2000 - s8@2000 | +12.0 [+8.0, +16.2], 62/14, p=2.3e-08 | — | — | — | — |
+| s8concise - base | +12.5 [+8.2, +16.8], 66/16, p=2.3e-08 | — | — | — | — |
+| s8concise - s8 | +11.5 [+7.0, +16.0], 69/23, p=1.7e-06 | — | — | — | — |
+| s8concise - concise | -1.0 [-4.8, +2.8], 27/31, p=0.69 | — | — | — | — |
 | s8 (2 seeds) - base (2 seeds) | +0.5 [-2.5, +3.5], +51/-47, p=0.74 | +4.2 [+0.9, +7.6], +76/-53, p=0.014 | +5.1 [+1.6, +8.6], +84/-56, p=0.0044 | +6.8 [+3.1, +10.4], +88/-54, p=0.0003 | +4.9 [+1.2, +8.6], +81/-62, p=0.0095 |
 | concise - base (2 seeds) | +13.1 [+9.3, +17.0], +88/-23, p=7.4e-11 | +8.9 [+4.9, +12.8], +90/-35, p=1.2e-05 | +5.8 [+1.6, +9.9], +87/-49, p=0.0064 | +5.1 [+0.8, +9.4], +87/-51, p=0.019 | +1.4 [-2.9, +5.7], +78/-52, p=0.53 |
 | concise - s8 (2 seeds) | +12.6 [+9.0, +16.3], +98/-26, p=4.4e-11 | +4.6 [+1.0, +8.2], +80/-43, p=0.012 | +0.6 [-3.5, +4.8], +81/-62, p=0.77 | -1.6 [-5.8, +2.6], +81/-67, p=0.45 | -3.5 [-7.9, +0.9], +77/-71, p=0.12 |
+| s8concise - s8 (2 seeds) | +11.6 [+7.9, +15.4], +95/-30, p=2.1e-09 | — | — | — | — |
+| concise (2 seeds) - base (2 seeds) | +12.8 [+9.3, +16.2], +96/-19, p=1.4e-12 | — | — | — | — |
+| s8 (2 seeds) - concise (2 seeds) | -12.2 [-15.4, -9.1], +20/-102, p=1.6e-13 | — | — | — | — |
 
 Wrong<->correct flips summed over every single-run comparison and cap: 4.
 Single-run rows: exact sign test, bootstrap CI. Two-seed rows: per-problem mean over seeds 1000 and 2000,

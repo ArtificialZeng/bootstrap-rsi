@@ -7,10 +7,11 @@ SRC = os.path.dirname(os.path.abspath(__file__))
 REL = os.path.join(SRC, "..", "release")
 DST = os.path.join(REL, "lab")
 CODE = ["common.py", "mech.py", "ext.py", "cap_table.py", "analyze.py", "agent8b.py", "test_agent8b.py", "seam_check.py",
-        "check_prefill.py", "run.py", "qrun.sh", "make_release.py"]
+        "check_prefill.py", "run.py", "qrun.sh", "make_release.py", "chain_stats.py"]
 OUT = ["q35_caps.json", "q35_caps.md", "results.json", "results.md", "prereg_16384.md", "prereg_chain.md", "check_prefill_q35-4b.json",
        "mech_1.7b_summary.json", "mech_1.7b_config.json", "mech_q35-4b_summary.json", "mech_q35-4b_config.json", "seam_q35-4b.json"]
-OUT_GLOBS = ["mech_q35-4b_eval_*.meta.json", "figs/*.svg"]
+OUT_GLOBS = ["mech_q35-4b_eval_*.meta.json", "figs/*.svg", "8b_session8b_*.json", "8b_c4096_p60_e400_results.json",
+             "8b_c4096_p60_e400_chain*_stats.json"]
 HANDOFF = ["review2.md", "review_agent8b.md", "TASK_review2.md", "TASK_review_agent8b.md", "codex/COMMON.md",
            "codex/make_figs.py", "codex/fig_caps.py", "codex/analyze_caps.py", "codex/analyze_sessions.py", "codex/truncation_anatomy.py",
            "codex/test_stats.py", "codex/figs_caps/*.svg"]
@@ -62,6 +63,10 @@ def main():
             s2 = link.sub(fix, s)
             if s2 != s:
                 open(p, "w", encoding="utf-8").write(s2)
+    # result files record where the edited tensors were saved; keep the file name only
+    for p in glob.glob(os.path.join(DST, "out", "*_results.json")):
+        s = open(p, encoding="utf-8").read()
+        open(p, "w", encoding="utf-8").write(s.replace(os.path.join(SRC, "out") + os.sep, "out/"))
     # nothing private may ship
     bad = []
     pat = re.compile("|".join(["/Use" + "rs/", "scratch-" + "workspaces", "/private" + "/tmp", "@gm" + "ail", "whats" + "app"]), re.I)

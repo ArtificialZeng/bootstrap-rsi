@@ -30,7 +30,9 @@ from scipy.stats import binomtest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common import load_data, build_prompts, generate, grade, summarize, OUT, HF
 
-MODEL_PATH = glob.glob(f"{HF}/models--mlx-community--Qwen3-8B-8bit/snapshots/*")[0]
+MODELS = {"8b": ("models--mlx-community--Qwen3-8B-8bit", "Qwen3-8B"),
+          "14b": ("models--mlx-community--Qwen3-14B-8bit", "Qwen3-14B")}
+MTAG = "8b"  # --model: prefix of the results key and of every output file
 PROJ = {"self_attn": ["q_proj", "k_proj", "v_proj", "o_proj"], "mlp": ["gate_proj", "up_proj", "down_proj"]}
 
 
@@ -273,9 +275,9 @@ class Env:
         ids = list(ids)
         bad = [i for i in ids if i not in self.practice]
         if bad:
-            raise ValueError(f"unknown practice ids: {bad[:3]}")
+            raise ValueError(f"unknown practice ids: {bad[:3]}; ids are the strings in practice_ids, e.g. {next(iter(self.practice))!r}")
         if not ids or len(ids) > k:
-            raise ValueError(f"give 1..{k} practice ids")
+            raise ValueError(f"this call got {len(ids)} ids; pass between 1 and {k} ids per call")
         return ids
 
     # ---- weights
@@ -392,6 +394,8 @@ class Env:
     def confirm(self):
         if self.checked is None:
             raise RuntimeError("call submit() first; the framework then runs the one-time check")
+        if "error" in self.checked:
+            raise RuntimeError("the check failed, so there is nothing to confirm; call withdraw()")
         if self.decision:
             raise RuntimeError(f"already decided: {self.decision}")
         self.decision = "submit"
@@ -463,6 +467,19 @@ def make_namespace(env):
     return ns
 
 
+ECHO = False  # --echo: show the value of a code block's last expression, as a notebook does
+
+
+def _compile_session(code):
+    """-> (exec code object, eval code object or None). With ECHO the last bare expression is evaluated and shown."""
+    if ECHO:
+        tree = ast.parse(code, "<session>")
+        if tree.body and isinstance(tree.body[-1], ast.Expr):
+            last = ast.Expression(tree.body.pop().value)
+            return compile(tree, "<session>", "exec"), compile(last, "<session>", "eval")
+    return compile(code, "<session>", "exec"), None
+
+
 def exec_code(ns, code, timeout, max_chars=4000):
     why = refuse_reason(code)
     if why:
@@ -473,7 +490,12 @@ def exec_code(ns, code, timeout, max_chars=4000):
     signal.setitimer(signal.ITIMER_REAL, timeout)
     try:
         with contextlib.redirect_stdout(buf):
-            exec(compile(code, "<session>", "exec"), ns)
+            body, last = _compile_session(code)
+            exec(body, ns)
+            if last is not None:
+                v = eval(last, ns)
+                if v is not None:
+                    print(repr(v))
     except _Timeout:
         buf.write(f"\n[TimeoutError: code (excluding forward passes) exceeded {timeout}s]")
     except BudgetError as e:
@@ -489,7 +511,8 @@ def exec_code(ns, code, timeout, max_chars=4000):
     s = buf.getvalue()
     if len(s) > max_chars:
         s = s[: max_chars // 2] + f"\n... [{len(s) - max_chars} chars cut] ...\n" + s[-max_chars // 2:]
-    return s or "(no output)"
+    return s or ("(no output: the block printed nothing and its last line had no value; use print(...) to see values)"
+                 if ECHO else "(no output)")
 
 
 SYSTEM = """You are Qwen3-8B. In this session you can read and change your own weights.
@@ -544,14 +567,37 @@ def run_check(env, reserved):
     return time.time() - t
 
 
+def system_for(model, system):
+    """The instructions name the model and its tensor shapes; rewrite both for a model other than Qwen3-8B."""
+    if MTAG == "8b":
+        return system
+    blk = model.model.layers[0]
+    d, q = blk.self_attn.o_proj.weight.shape
+    kv, ff = blk.self_attn.k_proj.weight.shape[0], blk.mlp.up_proj.weight.shape[0]
+    swaps = (("q_proj (4096,4096), k_proj/v_proj (1024,4096), o_proj (4096,4096), gate_proj/up_proj (12288,4096), "
+              "down_proj (4096,12288). Only the rows of o_proj and down_proj are the 4096-dim residual stream.",
+              f"q_proj ({q},{d}), k_proj/v_proj ({kv},{d}), o_proj ({d},{q}), gate_proj/up_proj ({ff},{d}), "
+              f"down_proj ({d},{ff}). Only the rows of o_proj and down_proj are the {d}-dim residual stream."),
+             ("array (n, 4096)", f"array (n, {d})"), ("You are Qwen3-8B.", f"You are {MODELS[MTAG][1]}."))
+    for old, new in swaps:
+        assert system.count(old) == 1, old
+        system = system.replace(old, new)
+    return system
+
+
 def agent_session(model, tok, env, reserved, cfg, sid, seed_base):
     nL = len(model.model.layers) - 1
-    system = SYSTEM.format(cap=cfg.cap, L=nL, B=cfg.B, R=len(reserved), per_pass=cfg.per_pass,
-                           code_timeout=cfg.code_timeout)
+    system = system_for(model, SYSTEM.format(cap=cfg.cap, L=nL, B=cfg.B, R=len(reserved), per_pass=cfg.per_pass,
+                                             code_timeout=cfg.code_timeout))
+    if ECHO:
+        a0 = "It runs in a persistent Python session ("
+        assert a0 in system
+        system = system.replace(a0, "It runs in a persistent Python session; you are shown what it prints and the value "
+                                    "of its last expression (")
     msgs = [{"role": "system", "content": system}, {"role": "user", "content": first_user_msg(env)}]
     ns = make_namespace(env)
     code_left, t0, excluded, log, dropped, final_turns = cfg.C, time.time(), 0.0, [], False, 0
-    out_path = f"{OUT}/8b_session{sid}.json"  # sid carries the run tag, e.g. 8b_1 or 8b_gen2_try1
+    out_path = f"{OUT}/{MTAG}_session{sid}.json"  # sid carries the run tag, e.g. 8b_1 or 8b_gen2_try1
 
     def dump():
         json.dump(dict(system=system, log=log, events=env.events, checked=env.checked, decision=env.decision,
@@ -631,17 +677,23 @@ def main():
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--chain", type=int, default=4, help="chain phase: number of generations")
     ap.add_argument("--attempts", type=int, default=2, help="chain phase: sessions per generation before the chain stops")
+    ap.add_argument("--chain-name", default="", help="suffix for a further chain: its files and results key are chain<NAME>")
+    ap.add_argument("--model", default="8b", choices=list(MODELS), help="which model edits itself (default: Qwen3-8B)")
+    ap.add_argument("--echo", action="store_true", help="show the value of each code block's last expression to the model")
     ap.add_argument("--scripted", action="store_true",
                     help="chain phase, plumbing test only: a fixed tiny edit replaces the agent session in every generation")
     a = ap.parse_args()
+    global ECHO, MTAG
+    ECHO, MTAG = a.echo, a.model
+    cn = "chain" + a.chain_name
     cfg = argparse.Namespace(cap=4096, B=10, C=60, turns=80, hours=4.0, turn_tokens=6000, ctx=30000,
                              code_timeout=600, per_pass=16, n_practice=60, n_reserved=40, n_eval=400)
-    tag = "8b"
+    tag = a.model
     if a.smoke:
         cfg = argparse.Namespace(cap=384, B=4, C=6, turns=5, hours=0.5, turn_tokens=3000, ctx=30000,
                                  code_timeout=120, per_pass=4, n_practice=6, n_reserved=3, n_eval=4)
-        tag = "8bsmoke"
-    model, tok = load(MODEL_PATH)
+        tag = a.model + "smoke"
+    model, tok = load(glob.glob(f"{HF}/{MODELS[a.model][0]}/snapshots/*")[0])
     print("dequantized projections:", dequantize_projections(model), flush=True)
     mx.set_cache_limit(8 << 30)
     prac, ev = load_data()
@@ -665,14 +717,14 @@ def main():
 
     # reuse the 8B answers from mech.py (same model, same dequantized weights, cap, seeds) when available
     mp, me = f"{OUT}/mech_8b_practice_base.pkl", f"{OUT}/mech_8b_eval_base.pkl"
-    if not a.smoke and cfg.cap == 4096 and os.path.exists(mp):
+    if a.model == "8b" and not a.smoke and cfg.cap == 4096 and os.path.exists(mp):
         pids = {p["unique_id"] for p in practice}
         base_prac = [r for r in pickle.load(open(mp, "rb")) if r["pid"] in pids]
         assert len(base_prac) == len(practice)
     else:
         base_prac = cached("practice_base", lambda: gen_grade(model, tok, practice, cfg.cap, 100))
     results["practice_base"] = summarize(base_prac, f"{tag}_practice_base")
-    if not a.smoke and cfg.cap == 4096 and os.path.exists(me) and len(pickle.load(open(me, "rb"))) == len(ev):
+    if a.model == "8b" and not a.smoke and cfg.cap == 4096 and os.path.exists(me) and len(pickle.load(open(me, "rb"))) == len(ev):
         base_eval = pickle.load(open(me, "rb"))
     else:
         base_eval = cached("eval_base", lambda: gen_grade(model, tok, ev, cfg.cap, 1000))
@@ -748,14 +800,14 @@ def main():
                 out[p] = lin
             return out
 
-        chain = results.setdefault("chain", {"generations": {}, "attempts": {}, "stopped": None})
+        chain = results.setdefault(cn, {"generations": {}, "attempts": {}, "stopped": None, "echo": a.echo})
         cur_prac, prev_eval, history = base_prac, base_eval, []
         for g in range(1, a.chain + 1):
             G = chain["generations"].get(str(g))
             if G:  # finished earlier: restore this generation's weights and its answers
                 bake(load_edits(G["edits_file"]))
-                cur_prac = pickle.load(open(P(f"chain_gen{g}_practice"), "rb"))
-                prev_eval = pickle.load(open(P(f"chain_gen{g}_eval_s1000"), "rb"))
+                cur_prac = pickle.load(open(P(f"{cn}_gen{g}_practice"), "rb"))
+                prev_eval = pickle.load(open(P(f"{cn}_gen{g}_eval_s1000"), "rb"))
                 history.append(G["line"]); continue
             if chain["stopped"]:
                 break
@@ -782,10 +834,12 @@ def main():
                         W = subj.get(name); subj.set(name, W - 0.5 * np.outer(u, u @ W))
                         run_check(env, reserved); dec = env.decision = "submit"
                     else:
-                        dec = agent_session(model, tok, env, reserved, cfg, f"{tag}_{aname}", seed_base=100000 * (10 * g + k))
+                        sid = f"{tag}_{aname}" if cn == "chain" else f"{tag}_{cn}_{aname}"
+                        dec = agent_session(model, tok, env, reserved, cfg, sid,
+                                            seed_base=100000 * (10 * g + k) + 10 ** 7 * (zlib.crc32(cn.encode()) % 100 if a.chain_name else 0))
                     A = dict(decision=dec, edits=subj.summary(), check=env.checked, units_used=cfg.B - env.B_left)
                     if dec == "submit" and subj.edits:
-                        A["edits_file"] = f"{OUT}/{key}_chain_{aname}_edits.safetensors"
+                        A["edits_file"] = f"{OUT}/{key}_{cn}_{aname}_edits.safetensors"
                         subj.save(A["edits_file"])
                     elif dec == "submit":
                         A["decision"] = "submit (no edit)"
@@ -799,8 +853,8 @@ def main():
             aname, A, subj = kept
             subj.locked = False
             bake(subj.edits)
-            new_eval = cached(f"chain_gen{g}_eval_s1000", lambda: gen_grade(model, tok, ev, cfg.cap, 1000))
-            cur_prac = cached(f"chain_gen{g}_practice", lambda: gen_grade(model, tok, practice, cfg.cap, 100))
+            new_eval = cached(f"{cn}_gen{g}_eval_s1000", lambda: gen_grade(model, tok, ev, cfg.cap, 1000))
+            cur_prac = cached(f"{cn}_gen{g}_practice", lambda: gen_grade(model, tok, practice, cfg.cap, 100))
             vs0, vsp = paired_stats(base_eval, new_eval), paired_stats(prev_eval, new_eval)
             chk = A["check"] if isinstance(A["check"], dict) and "delta" in A["check"] else {}
             line = (f"- generation {g}: changed {sorted(A['edits'])}; reserved check {chk.get('base_acc', float('nan')):.2f} -> "
@@ -815,10 +869,10 @@ def main():
         last = max((int(x) for x in chain["generations"]), default=0)
         if last and "final_two_seeds" not in chain:
             # pre-specified test (out/prereg_chain.md): last generation vs generation 0, two seeds each, paired by problem
-            e2 = cached(f"chain_gen{last}_eval_s2000", lambda: gen_grade(model, tok, ev, cfg.cap, 2000))
+            e2 = cached(f"{cn}_gen{last}_eval_s2000", lambda: gen_grade(model, tok, ev, cfg.cap, 2000))
             b2 = pickle.load(open(P("eval_reseed"), "rb")) if os.path.exists(P("eval_reseed")) else None
             if b2 is not None:
-                e1 = pickle.load(open(P(f"chain_gen{last}_eval_s1000"), "rb"))
+                e1 = pickle.load(open(P(f"{cn}_gen{last}_eval_s1000"), "rb"))
                 chain["final_two_seeds"] = dict(generation=last, seed1000=paired_stats(base_eval, e1), seed2000=paired_stats(b2, e2))
                 print("[chain final]", json.dumps(chain["final_two_seeds"])[:800], flush=True); save()
     print("DONE", flush=True)

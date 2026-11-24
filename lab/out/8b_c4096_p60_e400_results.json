@@ -1,0 +1,650 @@
+{
+ "practice_base": {
+  "tag": "8b_practice_base",
+  "n": 60,
+  "acc": 0.6666666666666666,
+  "trunc": 0.31666666666666665,
+  "acc_fin": 0.975609756097561,
+  "mean_len": 3148.616666666667
+ },
+ "eval_base": {
+  "tag": "8b_eval_base",
+  "n": 400,
+  "acc": 0.5225,
+  "trunc": 0.475,
+  "acc_fin": 0.9952380952380953,
+  "mean_len": 3270.6725
+ },
+ "reseed": {
+  "n": 400,
+  "base_acc": 0.5225,
+  "edit_acc": 0.5375,
+  "delta": 0.015,
+  "se": 0.015,
+  "wins": 21,
+  "losses": 15,
+  "p_sign_one_sided": 0.2025161230703816,
+  "base_trunc": 0.475,
+  "edit_trunc": 0.46,
+  "base_looping": 0.0,
+  "edit_looping": 0.0,
+  "base_acc_finished": 0.9952380952380953,
+  "edit_acc_finished": 0.9953703703703703
+ },
+ "chain": {
+  "generations": {
+   "1": {
+    "session": "gen1_try1",
+    "edits": {
+     "layers.0.self_attn.o_proj": 0.007871,
+     "layers.0.mlp.down_proj": 0.006033,
+     "layers.0.mlp.gate_proj": 0.000811
+    },
+    "edits_file": "out/8b_c4096_p60_e400_chain_gen1_try1_edits.safetensors",
+    "check": {
+     "n": 40,
+     "base_acc": 0.625,
+     "edit_acc": 0.7,
+     "delta": 0.075,
+     "se": 0.042176369614348674,
+     "wins": 3,
+     "losses": 0,
+     "p_sign_one_sided": 0.125,
+     "base_trunc": 0.375,
+     "edit_trunc": 0.3,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "eval_vs_gen0": {
+     "n": 400,
+     "base_acc": 0.5225,
+     "edit_acc": 0.5375,
+     "delta": 0.015,
+     "se": 0.016204751925358373,
+     "wins": 24,
+     "losses": 18,
+     "p_sign_one_sided": 0.22039953367129783,
+     "base_trunc": 0.475,
+     "edit_trunc": 0.46,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 0.9952380952380953,
+     "edit_acc_finished": 0.9953703703703703
+    },
+    "eval_vs_previous": {
+     "n": 400,
+     "base_acc": 0.5225,
+     "edit_acc": 0.5375,
+     "delta": 0.015,
+     "se": 0.016204751925358373,
+     "wins": 24,
+     "losses": 18,
+     "p_sign_one_sided": 0.22039953367129783,
+     "base_trunc": 0.475,
+     "edit_trunc": 0.46,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 0.9952380952380953,
+     "edit_acc_finished": 0.9953703703703703
+    },
+    "line": "- generation 1: changed ['layers.0.mlp.down_proj', 'layers.0.mlp.gate_proj', 'layers.0.self_attn.o_proj']; reserved check 0.62 -> 0.70; practice accuracy now 0.600, 0.400 of answers run out of tokens",
+    "practice": {
+     "tag": "8b_chain_gen1_practice",
+     "n": 60,
+     "acc": 0.6,
+     "trunc": 0.4,
+     "acc_fin": 1.0,
+     "mean_len": 3196.0333333333333
+    }
+   }
+  },
+  "attempts": {
+   "gen1_try1": {
+    "decision": "submit",
+    "edits": {
+     "layers.0.self_attn.o_proj": 0.007871,
+     "layers.0.mlp.down_proj": 0.006033,
+     "layers.0.mlp.gate_proj": 0.000811
+    },
+    "check": {
+     "n": 40,
+     "base_acc": 0.625,
+     "edit_acc": 0.7,
+     "delta": 0.075,
+     "se": 0.042176369614348674,
+     "wins": 3,
+     "losses": 0,
+     "p_sign_one_sided": 0.125,
+     "base_trunc": 0.375,
+     "edit_trunc": 0.3,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "units_used": 0,
+    "edits_file": "out/8b_c4096_p60_e400_chain_gen1_try1_edits.safetensors"
+   }
+  },
+  "stopped": null
+ },
+ "chainB": {
+  "generations": {
+   "1": {
+    "session": "gen1_try1",
+    "edits": {
+     "layers.10.mlp.down_proj": 0.001554,
+     "layers.10.self_attn.k_proj": 0.003147,
+     "layers.10.mlp.up_proj": 0.000892,
+     "layers.5.self_attn.o_proj": 0.001566
+    },
+    "edits_file": "out/8b_c4096_p60_e400_chainB_gen1_try1_edits.safetensors",
+    "check": {
+     "n": 40,
+     "base_acc": 0.625,
+     "edit_acc": 0.65,
+     "delta": 0.025,
+     "se": 0.05647213971599238,
+     "wins": 3,
+     "losses": 2,
+     "p_sign_one_sided": 0.5,
+     "base_trunc": 0.375,
+     "edit_trunc": 0.35,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "eval_vs_gen0": {
+     "n": 400,
+     "base_acc": 0.5225,
+     "edit_acc": 0.5325,
+     "delta": 0.01,
+     "se": 0.015010439141078455,
+     "wins": 20,
+     "losses": 16,
+     "p_sign_one_sided": 0.308859658514848,
+     "base_trunc": 0.475,
+     "edit_trunc": 0.465,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 0.9952380952380953,
+     "edit_acc_finished": 0.9953271028037384
+    },
+    "eval_vs_previous": {
+     "n": 400,
+     "base_acc": 0.5225,
+     "edit_acc": 0.5325,
+     "delta": 0.01,
+     "se": 0.015010439141078455,
+     "wins": 20,
+     "losses": 16,
+     "p_sign_one_sided": 0.308859658514848,
+     "base_trunc": 0.475,
+     "edit_trunc": 0.465,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 0.9952380952380953,
+     "edit_acc_finished": 0.9953271028037384
+    },
+    "line": "- generation 1: changed ['layers.10.mlp.down_proj', 'layers.10.mlp.up_proj', 'layers.10.self_attn.k_proj', 'layers.5.self_attn.o_proj']; reserved check 0.62 -> 0.65; practice accuracy now 0.617, 0.383 of answers run out of tokens",
+    "practice": {
+     "tag": "8b_chain_gen1_practice",
+     "n": 60,
+     "acc": 0.6166666666666667,
+     "trunc": 0.38333333333333336,
+     "acc_fin": 1.0,
+     "mean_len": 3186.9166666666665
+    }
+   },
+   "2": {
+    "session": "gen2_try2",
+    "edits": {
+     "layers.5.self_attn.o_proj": 0.016504,
+     "layers.10.self_attn.o_proj": 0.018046,
+     "layers.5.mlp.down_proj": 0.018746,
+     "layers.10.mlp.down_proj": 0.01711,
+     "layers.5.mlp.gate_proj": 0.008865,
+     "layers.10.mlp.gate_proj": 0.009869,
+     "layers.5.mlp.up_proj": 0.015008,
+     "layers.10.mlp.up_proj": 0.013598,
+     "layers.5.self_attn.k_proj": 0.00615,
+     "layers.5.self_attn.v_proj": 0.006432,
+     "layers.10.self_attn.k_proj": 0.005706,
+     "layers.10.self_attn.v_proj": 0.0062
+    },
+    "edits_file": "out/8b_c4096_p60_e400_chainB_gen2_try2_edits.safetensors",
+    "check": {
+     "n": 40,
+     "base_acc": 0.65,
+     "edit_acc": 0.6,
+     "delta": -0.05,
+     "se": 0.07116250813527138,
+     "wins": 3,
+     "losses": 5,
+     "p_sign_one_sided": 0.85546875,
+     "base_trunc": 0.35,
+     "edit_trunc": 0.4,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "eval_vs_gen0": {
+     "n": 400,
+     "base_acc": 0.5225,
+     "edit_acc": 0.5125,
+     "delta": -0.01,
+     "se": 0.016969676626619322,
+     "wins": 21,
+     "losses": 25,
+     "p_sign_one_sided": 0.7693044089316174,
+     "base_trunc": 0.475,
+     "edit_trunc": 0.4875,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 0.9952380952380953,
+     "edit_acc_finished": 1.0
+    },
+    "eval_vs_previous": {
+     "n": 400,
+     "base_acc": 0.5325,
+     "edit_acc": 0.5125,
+     "delta": -0.02,
+     "se": 0.016573675415911218,
+     "wins": 18,
+     "losses": 26,
+     "p_sign_one_sided": 0.9129144263646367,
+     "base_trunc": 0.465,
+     "edit_trunc": 0.4875,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 0.9953271028037384,
+     "edit_acc_finished": 1.0
+    },
+    "line": "- generation 2: changed ['layers.10.mlp.down_proj', 'layers.10.mlp.gate_proj', 'layers.10.mlp.up_proj', 'layers.10.self_attn.k_proj', 'layers.10.self_attn.o_proj', 'layers.10.self_attn.v_proj', 'layers.5.mlp.down_proj', 'layers.5.mlp.gate_proj', 'layers.5.mlp.up_proj', 'layers.5.self_attn.k_proj', 'layers.5.self_attn.o_proj', 'layers.5.self_attn.v_proj']; reserved check 0.65 -> 0.60; practice accuracy now 0.533, 0.467 of answers run out of tokens",
+    "practice": {
+     "tag": "8b_chain_gen2_practice",
+     "n": 60,
+     "acc": 0.5333333333333333,
+     "trunc": 0.4666666666666667,
+     "acc_fin": 1.0,
+     "mean_len": 3251.2833333333333
+    }
+   },
+   "3": {
+    "session": "gen3_try2",
+    "edits": {
+     "layers.10.self_attn.k_proj": 0.003153,
+     "layers.10.mlp.gate_proj": 0.00092,
+     "layers.10.self_attn.v_proj": 0.003137,
+     "layers.10.self_attn.o_proj": 0.006166,
+     "layers.10.mlp.down_proj": 0.011393,
+     "layers.5.mlp.down_proj": 0.005018,
+     "layers.5.mlp.up_proj": 0.00261,
+     "layers.10.mlp.up_proj": 0.006297,
+     "layers.10.self_attn.q_proj": 0.000772
+    },
+    "edits_file": "out/8b_c4096_p60_e400_chainB_gen3_try2_edits.safetensors",
+    "check": {
+     "n": 40,
+     "base_acc": 0.6,
+     "edit_acc": 0.625,
+     "delta": 0.025,
+     "se": 0.06686668711812965,
+     "wins": 4,
+     "losses": 3,
+     "p_sign_one_sided": 0.5,
+     "base_trunc": 0.4,
+     "edit_trunc": 0.375,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "eval_vs_gen0": {
+     "n": 400,
+     "base_acc": 0.5225,
+     "edit_acc": 0.52,
+     "delta": -0.0025,
+     "se": 0.014378847420180524,
+     "wins": 16,
+     "losses": 17,
+     "p_sign_one_sided": 0.6358337595593184,
+     "base_trunc": 0.475,
+     "edit_trunc": 0.4775,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 0.9952380952380953,
+     "edit_acc_finished": 0.9952153110047847
+    },
+    "eval_vs_previous": {
+     "n": 400,
+     "base_acc": 0.5125,
+     "edit_acc": 0.52,
+     "delta": 0.0075,
+     "se": 0.016023459462077227,
+     "wins": 22,
+     "losses": 19,
+     "p_sign_one_sided": 0.3776143287523155,
+     "base_trunc": 0.4875,
+     "edit_trunc": 0.4775,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 0.9952153110047847
+    },
+    "line": "- generation 3: changed ['layers.10.mlp.down_proj', 'layers.10.mlp.gate_proj', 'layers.10.mlp.up_proj', 'layers.10.self_attn.k_proj', 'layers.10.self_attn.o_proj', 'layers.10.self_attn.q_proj', 'layers.10.self_attn.v_proj', 'layers.5.mlp.down_proj', 'layers.5.mlp.up_proj']; reserved check 0.60 -> 0.62; practice accuracy now 0.583, 0.417 of answers run out of tokens",
+    "practice": {
+     "tag": "8b_chain_gen3_practice",
+     "n": 60,
+     "acc": 0.5833333333333334,
+     "trunc": 0.4166666666666667,
+     "acc_fin": 1.0,
+     "mean_len": 3205.3166666666666
+    }
+   },
+   "4": {
+    "session": "gen4_try2",
+    "edits": {
+     "layers.10.self_attn.o_proj": 0.002827,
+     "layers.10.mlp.down_proj": 0.000785,
+     "layers.5.mlp.gate_proj": 0.000443,
+     "layers.10.mlp.up_proj": 0.000448,
+     "layers.10.self_attn.v_proj": 0.001553
+    },
+    "edits_file": "out/8b_c4096_p60_e400_chainB_gen4_try2_edits.safetensors",
+    "check": {
+     "n": 40,
+     "base_acc": 0.625,
+     "edit_acc": 0.65,
+     "delta": 0.025,
+     "se": 0.04366979828269513,
+     "wins": 2,
+     "losses": 1,
+     "p_sign_one_sided": 0.5,
+     "base_trunc": 0.375,
+     "edit_trunc": 0.35,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "eval_vs_gen0": {
+     "n": 400,
+     "base_acc": 0.5225,
+     "edit_acc": 0.51,
+     "delta": -0.0125,
+     "se": 0.014365768802372116,
+     "wins": 14,
+     "losses": 19,
+     "p_sign_one_sided": 0.8518968157004565,
+     "base_trunc": 0.475,
+     "edit_trunc": 0.49,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 0.9952380952380953,
+     "edit_acc_finished": 1.0
+    },
+    "eval_vs_previous": {
+     "n": 400,
+     "base_acc": 0.52,
+     "edit_acc": 0.51,
+     "delta": -0.01,
+     "se": 0.01458704750411193,
+     "wins": 15,
+     "losses": 19,
+     "p_sign_one_sided": 0.804235847434029,
+     "base_trunc": 0.4775,
+     "edit_trunc": 0.49,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 0.9952153110047847,
+     "edit_acc_finished": 1.0
+    },
+    "line": "- generation 4: changed ['layers.10.mlp.down_proj', 'layers.10.mlp.up_proj', 'layers.10.self_attn.o_proj', 'layers.10.self_attn.v_proj', 'layers.5.mlp.gate_proj']; reserved check 0.62 -> 0.65; practice accuracy now 0.600, 0.400 of answers run out of tokens",
+    "practice": {
+     "tag": "8b_chain_gen4_practice",
+     "n": 60,
+     "acc": 0.6,
+     "trunc": 0.4,
+     "acc_fin": 1.0,
+     "mean_len": 3227.4333333333334
+    }
+   }
+  },
+  "attempts": {
+   "gen1_try1": {
+    "decision": "submit",
+    "edits": {
+     "layers.10.mlp.down_proj": 0.001554,
+     "layers.10.self_attn.k_proj": 0.003147,
+     "layers.10.mlp.up_proj": 0.000892,
+     "layers.5.self_attn.o_proj": 0.001566
+    },
+    "check": {
+     "n": 40,
+     "base_acc": 0.625,
+     "edit_acc": 0.65,
+     "delta": 0.025,
+     "se": 0.05647213971599238,
+     "wins": 3,
+     "losses": 2,
+     "p_sign_one_sided": 0.5,
+     "base_trunc": 0.375,
+     "edit_trunc": 0.35,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "units_used": 8,
+    "edits_file": "out/8b_c4096_p60_e400_chainB_gen1_try1_edits.safetensors"
+   },
+   "gen2_try1": {
+    "decision": "withdraw",
+    "edits": {
+     "layers.10.self_attn.k_proj": 0.004993,
+     "layers.10.self_attn.o_proj": 0.003504,
+     "layers.5.self_attn.o_proj": 0.001468,
+     "layers.10.mlp.down_proj": 0.002379,
+     "layers.10.mlp.up_proj": 0.000869
+    },
+    "check": {
+     "n": 40,
+     "base_acc": 0.65,
+     "edit_acc": 0.65,
+     "delta": 0.0,
+     "se": 0.03580574370197164,
+     "wins": 1,
+     "losses": 1,
+     "p_sign_one_sided": 0.75,
+     "base_trunc": 0.35,
+     "edit_trunc": 0.35,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "units_used": 5
+   },
+   "gen2_try2": {
+    "decision": "submit",
+    "edits": {
+     "layers.5.self_attn.o_proj": 0.016504,
+     "layers.10.self_attn.o_proj": 0.018046,
+     "layers.5.mlp.down_proj": 0.018746,
+     "layers.10.mlp.down_proj": 0.01711,
+     "layers.5.mlp.gate_proj": 0.008865,
+     "layers.10.mlp.gate_proj": 0.009869,
+     "layers.5.mlp.up_proj": 0.015008,
+     "layers.10.mlp.up_proj": 0.013598,
+     "layers.5.self_attn.k_proj": 0.00615,
+     "layers.5.self_attn.v_proj": 0.006432,
+     "layers.10.self_attn.k_proj": 0.005706,
+     "layers.10.self_attn.v_proj": 0.0062
+    },
+    "check": {
+     "n": 40,
+     "base_acc": 0.65,
+     "edit_acc": 0.6,
+     "delta": -0.05,
+     "se": 0.07116250813527138,
+     "wins": 3,
+     "losses": 5,
+     "p_sign_one_sided": 0.85546875,
+     "base_trunc": 0.35,
+     "edit_trunc": 0.4,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "units_used": 3,
+    "edits_file": "out/8b_c4096_p60_e400_chainB_gen2_try2_edits.safetensors"
+   },
+   "gen3_try1": {
+    "decision": "withdraw",
+    "edits": {
+     "layers.5.self_attn.k_proj": 0.01152,
+     "layers.10.self_attn.k_proj": 0.010618,
+     "layers.5.self_attn.v_proj": 0.010819,
+     "layers.10.self_attn.v_proj": 0.010401,
+     "layers.5.mlp.down_proj": 0.008042,
+     "layers.10.mlp.down_proj": 0.007345,
+     "layers.5.mlp.up_proj": 0.004692,
+     "layers.10.mlp.up_proj": 0.004276,
+     "layers.5.mlp.gate_proj": 0.015977,
+     "layers.10.mlp.gate_proj": 0.017787,
+     "layers.5.self_attn.o_proj": 0.006169,
+     "layers.10.self_attn.o_proj": 0.006736
+    },
+    "check": null,
+    "units_used": 5
+   },
+   "gen3_try2": {
+    "decision": "submit",
+    "edits": {
+     "layers.10.self_attn.k_proj": 0.003153,
+     "layers.10.mlp.gate_proj": 0.00092,
+     "layers.10.self_attn.v_proj": 0.003137,
+     "layers.10.self_attn.o_proj": 0.006166,
+     "layers.10.mlp.down_proj": 0.011393,
+     "layers.5.mlp.down_proj": 0.005018,
+     "layers.5.mlp.up_proj": 0.00261,
+     "layers.10.mlp.up_proj": 0.006297,
+     "layers.10.self_attn.q_proj": 0.000772
+    },
+    "check": {
+     "n": 40,
+     "base_acc": 0.6,
+     "edit_acc": 0.625,
+     "delta": 0.025,
+     "se": 0.06686668711812965,
+     "wins": 4,
+     "losses": 3,
+     "p_sign_one_sided": 0.5,
+     "base_trunc": 0.4,
+     "edit_trunc": 0.375,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "units_used": 3,
+    "edits_file": "out/8b_c4096_p60_e400_chainB_gen3_try2_edits.safetensors"
+   },
+   "gen4_try1": {
+    "decision": "withdraw",
+    "edits": {
+     "layers.10.self_attn.k_proj": 0.003166,
+     "layers.10.self_attn.v_proj": 0.003142
+    },
+    "check": {
+     "n": 40,
+     "base_acc": 0.625,
+     "edit_acc": 0.625,
+     "delta": 0.0,
+     "se": 0.03580574370197164,
+     "wins": 1,
+     "losses": 1,
+     "p_sign_one_sided": 0.75,
+     "base_trunc": 0.375,
+     "edit_trunc": 0.375,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "units_used": 0
+   },
+   "gen4_try2": {
+    "decision": "submit",
+    "edits": {
+     "layers.10.self_attn.o_proj": 0.002827,
+     "layers.10.mlp.down_proj": 0.000785,
+     "layers.5.mlp.gate_proj": 0.000443,
+     "layers.10.mlp.up_proj": 0.000448,
+     "layers.10.self_attn.v_proj": 0.001553
+    },
+    "check": {
+     "n": 40,
+     "base_acc": 0.625,
+     "edit_acc": 0.65,
+     "delta": 0.025,
+     "se": 0.04366979828269513,
+     "wins": 2,
+     "losses": 1,
+     "p_sign_one_sided": 0.5,
+     "base_trunc": 0.375,
+     "edit_trunc": 0.35,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "units_used": 4,
+    "edits_file": "out/8b_c4096_p60_e400_chainB_gen4_try2_edits.safetensors"
+   }
+  },
+  "stopped": null,
+  "echo": true,
+  "final_two_seeds": {
+   "generation": 4,
+   "seed1000": {
+    "n": 400,
+    "base_acc": 0.5225,
+    "edit_acc": 0.51,
+    "delta": -0.0125,
+    "se": 0.014365768802372116,
+    "wins": 14,
+    "losses": 19,
+    "p_sign_one_sided": 0.8518968157004565,
+    "base_trunc": 0.475,
+    "edit_trunc": 0.49,
+    "base_looping": 0.0,
+    "edit_looping": 0.0,
+    "base_acc_finished": 0.9952380952380953,
+    "edit_acc_finished": 1.0
+   },
+   "seed2000": {
+    "n": 400,
+    "base_acc": 0.5375,
+    "edit_acc": 0.5125,
+    "delta": -0.025,
+    "se": 0.016556654463313048,
+    "wins": 17,
+    "losses": 27,
+    "p_sign_one_sided": 0.9519291227896929,
+    "base_trunc": 0.46,
+    "edit_trunc": 0.4875,
+    "base_looping": 0.0,
+    "edit_looping": 0.0025,
+    "base_acc_finished": 0.9953703703703703,
+    "edit_acc_finished": 1.0
+   }
+  }
+ }
+}

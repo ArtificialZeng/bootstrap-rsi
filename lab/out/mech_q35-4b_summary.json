@@ -6,7 +6,9 @@
   "s8rand",
   "concise",
   "reseed",
-  "s8@2000"
+  "s8@2000",
+  "s8concise",
+  "concise@2000"
  ],
  "arm_files": {
   "base": "eval_base",
@@ -14,14 +16,18 @@
   "s8rand": "eval_s8rand",
   "concise": "eval_concise",
   "reseed": "eval_reseed",
-  "s8@2000": "eval_s8_seed2000"
+  "s8@2000": "eval_s8_seed2000",
+  "s8concise": "eval_s8concise",
+  "concise@2000": "eval_concise_seed2000"
  },
  "arm_seeds": {
   "s8": 1000,
   "s8rand": 1000,
   "concise": 1000,
   "reseed": 2000,
-  "s8@2000": 2000
+  "s8@2000": 2000,
+  "s8concise": 1000,
+  "concise@2000": 2000
  },
  "n_eval": 400,
  "eval": {
@@ -72,6 +78,22 @@
    "trunc": 0.745,
    "acc_fin": 1.0,
    "mean_len": 3687.4475
+  },
+  "s8concise": {
+   "tag": "mech_q35-4b_eval_s8concise",
+   "n": 400,
+   "acc": 0.3725,
+   "trunc": 0.6275,
+   "acc_fin": 1.0,
+   "mean_len": 3214.6875
+  },
+  "concise@2000": {
+   "tag": "mech_q35-4b_eval_concise@2000",
+   "n": 400,
+   "acc": 0.375,
+   "trunc": 0.625,
+   "acc_fin": 1.0,
+   "mean_len": 3162.015
   }
  },
  "paired_base": {
@@ -79,7 +101,9 @@
   "s8rand": "base",
   "concise": "base",
   "reseed": "base",
-  "s8@2000": "base"
+  "s8@2000": "base",
+  "s8concise": "base",
+  "concise@2000": "base"
  },
  "paired_vs_base": {
   "s8": {
@@ -157,6 +181,38 @@
    "p_sign_one_sided": 0.4021585000966992,
    "base_trunc": 0.7525,
    "edit_trunc": 0.745,
+   "base_looping": 0.0,
+   "edit_looping": 0.0,
+   "base_acc_finished": 1.0,
+   "edit_acc_finished": 1.0
+  },
+  "s8concise": {
+   "n": 400,
+   "base_acc": 0.2475,
+   "edit_acc": 0.3725,
+   "delta": 0.125,
+   "se": 0.02178586835887833,
+   "wins": 66,
+   "losses": 16,
+   "p_sign_one_sided": 1.1259897956967085e-08,
+   "base_trunc": 0.7525,
+   "edit_trunc": 0.6275,
+   "base_looping": 0.0,
+   "edit_looping": 0.0,
+   "base_acc_finished": 1.0,
+   "edit_acc_finished": 1.0
+  },
+  "concise@2000": {
+   "n": 400,
+   "base_acc": 0.2475,
+   "edit_acc": 0.375,
+   "delta": 0.1275,
+   "se": 0.023009410192212313,
+   "wins": 71,
+   "losses": 20,
+   "p_sign_one_sided": 3.6226868403946156e-08,
+   "base_trunc": 0.7525,
+   "edit_trunc": 0.625,
    "base_looping": 0.0,
    "edit_looping": 0.0,
    "base_acc_finished": 1.0,
