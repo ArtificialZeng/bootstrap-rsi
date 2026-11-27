@@ -168,3 +168,9 @@ two-sided):** difference +1.375 points, 95% CI [-0.81, +3.56], p = 0.216. Sign-f
 Reading under the rules above (each chain's primary test against 0.025): no improvement is claimed for chain 14B.
 The difference is positive, below the seed difference of the unedited model, and its interval includes zero. The
 chain retained one generation, so it gives no observation of gains accumulating across generations.
+
+Correction (2026-11-27 09:35 +08, after an independent recomputation, `handoff/codex/T18_audit14b/REPORT.md`): in
+generation 2, session 1 reset its candidate and then called the submit tool with no edit in place; the tool refused
+and the session withdrew. No reserved check was run. "Withdrew without requesting the check" above is inexact on
+that point. The recomputation confirmed every number in this entry; for generation 1 at seed 2000 it obtained a
+bootstrap interval of [-3.50, +2.50] where this entry has [-3.50, +2.75] (resampling noise at one grid step).

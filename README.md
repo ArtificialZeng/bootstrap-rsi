@@ -79,12 +79,12 @@ Two defects of our own tooling, both recorded in dated addenda to the [pre-regis
 | 1 | 1 | withdrawn | 65.0% → 65.0% | not scored | n/a | n/a |
 | 1 | 2 | kept | 65.0% → 75.0% | 60.50% | +3.25 | 27 / 14 |
 | 1, second seed | n/a | n/a | n/a | 58.50% | −0.50 | 19 / 21 |
-| 2 | 1 | withdrawn | not requested | not scored | n/a | n/a |
+| 2 | 1 | withdrawn | none (candidate was empty) | not scored | n/a | n/a |
 | 2 | 2 | withdrawn | 75.0% → 65.0% | not scored | n/a | n/a |
 
 Second-seed rows are compared with generation 0 at the same seed. The chain stopped at generation 2 because neither session kept an edit.
 
-**Pre-registered test** (generation 1 vs generation 0, two seeds): **+1.4 points, 95% CI [−0.8, +3.6], p = 0.22.** That is below the 1.75 points by which the unedited model differs from itself under a new seed. The +3.25 at the first seed did not recur at the second. All 81 changed answers are between "ran out of tokens" and "correct".
+**Pre-registered test** (generation 1 vs generation 0, two seeds): **+1.4 points, 95% CI [−0.8, +3.6], p = 0.22.** That is below the 1.75 points by which the unedited model differs from itself under a new seed. The +3.25 at the first seed did not recur at the second. All 81 changed answers are between "ran out of tokens" and "correct"; they fall on 62 problems, and 10 of the 19 problems that changed at both seeds changed in opposite directions. A second model re-derived these numbers from the raw answer files and checked the session descriptions ([report](lab/handoff/codex/T18_audit14b/REPORT.md)).
 
 - **The 14B sessions did more.** One session read a reference answer against its own failed answer, and two sessions took an edit direction from a hidden-state readout. Neither happened in the seven 8B sessions. The edit it kept changed nine matrices by 6% to 25%; the largest change in the 8B chain was 1.9%.
 - **The two checks that decided the chain mirror each other.** A 6%–25% edit moved the reserved check from 65% to 75% and was kept. A later 0.14%–0.34% edit moved it from 75% back to 65% and was withdrawn. A change of a few parts in a thousand moves this 40-problem check by as much as the edit the chain kept, so the signal the model acted on is inside the check's own sampling noise.

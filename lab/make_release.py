@@ -15,7 +15,8 @@ OUT_GLOBS = ["mech_q35-4b_eval_*.meta.json", "figs/*.svg", "8b_session8b_*.json"
              "14b_c4096_p60_e400_chain*_stats.json"]
 HANDOFF = ["review2.md", "review_agent8b.md", "TASK_review2.md", "TASK_review_agent8b.md", "codex/COMMON.md",
            "codex/make_figs.py", "codex/fig_caps.py", "codex/analyze_caps.py", "codex/analyze_sessions.py", "codex/truncation_anatomy.py",
-           "codex/test_stats.py", "codex/figs_caps/*.svg"]
+           "codex/test_stats.py", "codex/figs_caps/*.svg", "codex/T18_audit14b/REPORT.md", "codex/T18_audit14b/audit.py",
+           "codex/T18_audit14b/TASK.md", "codex/T18_audit14b/claims_to_check.md"]
 HANDOFF_GLOBS = [f"codex/T{i}_*.md" for i in (1, 2, 5, 6, 8, 11, 12, 15, 16)]  # reviews, analyses, current article
 REPORT = ["build_page.py", "template.html", "curve.json", "curve.md", "index.html"]
 SKIP = re.compile(r"\.(log|pkl|jsonl|npz)$|\.last\.txt$")
