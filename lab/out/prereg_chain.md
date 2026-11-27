@@ -123,3 +123,48 @@ Not part of the plan and reported as such: the queue that should have started th
 reach the GPU compiler (the runner had outlived an app restart) and every queued job exited within seconds, before
 loading a model or generating anything. The queue was restarted at 07:10 with the same commands. No 14B answer
 existed before that restart.
+
+## Addendum 4 (written 2026-11-25 08:45 +08, before any held-out answer of Qwen3-14B existed)
+
+The first start of chain 14B (07:27) generated the 60 practice answers of the unedited model (accuracy 68.3%,
+truncated 31.7%, 60 answers in one batch) and then failed 40 minutes into the first held-out scoring pass with a GPU
+out-of-memory error (`kIOGPUCommandBufferCallbackErrorOutOfMemory`). The process exited before writing any held-out
+answer: no `eval_base` file, no results file and no session file exist for 14B. Scoring passes had generated 64
+answers at once, the setting used for Qwen3-8B; the 14B model's weights and its per-token cache are larger.
+
+Change, for chain 14B only: scoring passes generate 32 answers at once (`--bs 32`). This applies to every pass of the
+chain alike: generation 0 at both seeds, every later generation, the practice answers and the reserved check. The
+batch size changes which random draws each answer receives and nothing else: model, prompts, sampling settings, seeds,
+cap, grading, splits, session limits, retention rule and the primary test are as written above. The 60 practice
+answers from the failed start were generated in one batch of 60 and are set aside
+(`14b_c4096_p60_e400_practice_base.bs64.pkl`); they are regenerated at the new batch size so that generation 0 and
+its successors are sampled the same way. The practice accuracy of the failed start (68.3%) was seen before this
+addendum; it is not an outcome of the plan and no decision above depends on it. The runner now also logs peak memory
+after each pass.
+
+The log of the failed start is kept as `chain14b.oom_fail.log`.
+
+## Outcome of chain 14B (entered 2026-11-27 09:14 +08, after the run; `chain_stats.py --key 14b_c4096_p60_e400`)
+
+Generation 0 (unedited Qwen3-14B, 400 held-out problems, 4096-token cap, 32 answers at once): 57.25% at seed 1000
+(42.50% truncated), 59.00% at seed 2000 (41.00% truncated). Seed difference +1.75 points, bootstrap interval
+[-1.50, +5.00], 26 gained / 19 lost, sign-test p = 0.371.
+
+Generation 1: session 1 withdrew (reserved check 65.0% -> 65.0%, 2 / 2). Session 2 confirmed nine changed matrices
+(relative changes 0.06 to 0.25) on a reserved check of 65.0% -> 75.0% (5 gained / 1 lost, one-sided p = 0.109).
+Held-out at seed 1000: 60.50% (39.25% truncated), +3.25 points against generation 0, bootstrap interval
+[+0.25, +6.50], 27 / 14, sign-test p = 0.060. At seed 2000: 58.50% (41.50% truncated), -0.50 points, interval
+[-3.50, +2.75], 19 / 21, p = 0.875. All 81 changed problems over the two seeds moved between a truncated and a
+correct answer.
+
+Generation 2: session 1 withdrew without requesting the check. Session 2 withdrew after a reserved check of
+75.0% -> 65.0% (1 gained / 5 lost). No edit was kept in two sessions, so the chain stopped under the rule above and
+generation 1 is the last retained generation.
+
+**Primary test (generation 1 vs generation 0, seeds 1000 and 2000, per-problem mean over seeds, paired t-test,
+two-sided):** difference +1.375 points, 95% CI [-0.81, +3.56], p = 0.216. Sign-flip p = 0.262; bootstrap interval
+[-0.75, +3.50]; 31 problems with a positive and 21 with a negative mean difference.
+
+Reading under the rules above (each chain's primary test against 0.025): no improvement is claimed for chain 14B.
+The difference is positive, below the seed difference of the unedited model, and its interval includes zero. The
+chain retained one generation, so it gives no observation of gains accumulating across generations.

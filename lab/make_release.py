@@ -11,7 +11,8 @@ CODE = ["common.py", "mech.py", "ext.py", "cap_table.py", "analyze.py", "agent8b
 OUT = ["q35_caps.json", "q35_caps.md", "results.json", "results.md", "prereg_16384.md", "prereg_chain.md", "check_prefill_q35-4b.json",
        "mech_1.7b_summary.json", "mech_1.7b_config.json", "mech_q35-4b_summary.json", "mech_q35-4b_config.json", "seam_q35-4b.json"]
 OUT_GLOBS = ["mech_q35-4b_eval_*.meta.json", "figs/*.svg", "8b_session8b_*.json", "8b_c4096_p60_e400_results.json",
-             "8b_c4096_p60_e400_chain*_stats.json"]
+             "8b_c4096_p60_e400_chain*_stats.json", "14b_session14b_*.json", "14b_c4096_p60_e400_results.json",
+             "14b_c4096_p60_e400_chain*_stats.json"]
 HANDOFF = ["review2.md", "review_agent8b.md", "TASK_review2.md", "TASK_review_agent8b.md", "codex/COMMON.md",
            "codex/make_figs.py", "codex/fig_caps.py", "codex/analyze_caps.py", "codex/analyze_sessions.py", "codex/truncation_anatomy.py",
            "codex/test_stats.py", "codex/figs_caps/*.svg"]

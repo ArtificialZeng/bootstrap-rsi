@@ -33,6 +33,7 @@ from common import load_data, build_prompts, generate, grade, summarize, OUT, HF
 MODELS = {"8b": ("models--mlx-community--Qwen3-8B-8bit", "Qwen3-8B"),
           "14b": ("models--mlx-community--Qwen3-14B-8bit", "Qwen3-14B")}
 MTAG = "8b"  # --model: prefix of the results key and of every output file
+BS = 64  # --bs: answers generated at once when a problem set is scored
 PROJ = {"self_attn": ["q_proj", "k_proj", "v_proj", "o_proj"], "mlp": ["gate_proj", "up_proj", "down_proj"]}
 
 
@@ -177,7 +178,8 @@ def is_looping(text, truncated):
 
 def gen_grade(model, tok, probs, cap, seed, verbose=True):
     prompts = build_prompts(tok, probs)
-    texts, ids = generate(model, tok, prompts, cap, seed=seed, verbose=verbose)
+    texts, ids = generate(model, tok, prompts, cap, seed=seed, bs=BS, verbose=verbose)
+    print(f"  peak memory {mx.get_peak_memory() / 2**30:.1f} GB", file=sys.stderr, flush=True)
     recs = []
     for p, pr, t, i in zip(probs, prompts, texts, ids):
         g = grade(t, len(i), cap, p["answer"])
@@ -679,12 +681,13 @@ def main():
     ap.add_argument("--attempts", type=int, default=2, help="chain phase: sessions per generation before the chain stops")
     ap.add_argument("--chain-name", default="", help="suffix for a further chain: its files and results key are chain<NAME>")
     ap.add_argument("--model", default="8b", choices=list(MODELS), help="which model edits itself (default: Qwen3-8B)")
+    ap.add_argument("--bs", type=int, default=64, help="answers generated at once when a problem set is scored (default 64)")
     ap.add_argument("--echo", action="store_true", help="show the value of each code block's last expression to the model")
     ap.add_argument("--scripted", action="store_true",
                     help="chain phase, plumbing test only: a fixed tiny edit replaces the agent session in every generation")
     a = ap.parse_args()
-    global ECHO, MTAG
-    ECHO, MTAG = a.echo, a.model
+    global ECHO, MTAG, BS
+    ECHO, MTAG, BS = a.echo, a.model, a.bs
     cn = "chain" + a.chain_name
     cfg = argparse.Namespace(cap=4096, B=10, C=60, turns=80, hours=4.0, turn_tokens=6000, ctx=30000,
                              code_timeout=600, per_pass=16, n_practice=60, n_reserved=40, n_eval=400)
@@ -800,7 +803,7 @@ def main():
                 out[p] = lin
             return out
 
-        chain = results.setdefault(cn, {"generations": {}, "attempts": {}, "stopped": None, "echo": a.echo})
+        chain = results.setdefault(cn, {"generations": {}, "attempts": {}, "stopped": None, "echo": a.echo, "bs": a.bs})
         cur_prac, prev_eval, history = base_prac, base_eval, []
         for g in range(1, a.chain + 1):
             G = chain["generations"].get(str(g))

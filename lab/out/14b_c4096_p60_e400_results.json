@@ -1,0 +1,256 @@
+{
+ "practice_base": {
+  "tag": "14b_practice_base",
+  "n": 60,
+  "acc": 0.6833333333333333,
+  "trunc": 0.3,
+  "acc_fin": 0.9761904761904762,
+  "mean_len": 2957.25
+ },
+ "eval_base": {
+  "tag": "14b_eval_base",
+  "n": 400,
+  "acc": 0.5725,
+  "trunc": 0.425,
+  "acc_fin": 0.9956521739130435,
+  "mean_len": 3113.5375
+ },
+ "reseed": {
+  "n": 400,
+  "base_acc": 0.5725,
+  "edit_acc": 0.59,
+  "delta": 0.0175,
+  "se": 0.016768641667064033,
+  "wins": 26,
+  "losses": 19,
+  "p_sign_one_sided": 0.1856490172355052,
+  "base_trunc": 0.425,
+  "edit_trunc": 0.41,
+  "base_looping": 0.0025,
+  "edit_looping": 0.0,
+  "base_acc_finished": 0.9956521739130435,
+  "edit_acc_finished": 1.0
+ },
+ "chain": {
+  "generations": {
+   "1": {
+    "session": "gen1_try2",
+    "edits": {
+     "layers.0.self_attn.o_proj": 0.250211,
+     "layers.0.mlp.down_proj": 0.100097,
+     "layers.5.self_attn.o_proj": 0.121609,
+     "layers.5.mlp.down_proj": 0.073537,
+     "layers.10.self_attn.o_proj": 0.112819,
+     "layers.10.mlp.down_proj": 0.061504,
+     "layers.0.self_attn.q_proj": 0.093395,
+     "layers.5.self_attn.q_proj": 0.100303,
+     "layers.10.self_attn.q_proj": 0.089482
+    },
+    "edits_file": "out/14b_c4096_p60_e400_chain_gen1_try2_edits.safetensors",
+    "check": {
+     "n": 40,
+     "base_acc": 0.65,
+     "edit_acc": 0.75,
+     "delta": 0.1,
+     "se": 0.05991446895152781,
+     "wins": 5,
+     "losses": 1,
+     "p_sign_one_sided": 0.109375,
+     "base_trunc": 0.35,
+     "edit_trunc": 0.25,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "eval_vs_gen0": {
+     "n": 400,
+     "base_acc": 0.5725,
+     "edit_acc": 0.605,
+     "delta": 0.0325,
+     "se": 0.01594506153856647,
+     "wins": 27,
+     "losses": 14,
+     "p_sign_one_sided": 0.029791944009048166,
+     "base_trunc": 0.425,
+     "edit_trunc": 0.3925,
+     "base_looping": 0.0025,
+     "edit_looping": 0.0,
+     "base_acc_finished": 0.9956521739130435,
+     "edit_acc_finished": 0.9958847736625515
+    },
+    "eval_vs_previous": {
+     "n": 400,
+     "base_acc": 0.5725,
+     "edit_acc": 0.605,
+     "delta": 0.0325,
+     "se": 0.01594506153856647,
+     "wins": 27,
+     "losses": 14,
+     "p_sign_one_sided": 0.029791944009048166,
+     "base_trunc": 0.425,
+     "edit_trunc": 0.3925,
+     "base_looping": 0.0025,
+     "edit_looping": 0.0,
+     "base_acc_finished": 0.9956521739130435,
+     "edit_acc_finished": 0.9958847736625515
+    },
+    "line": "- generation 1: changed ['layers.0.mlp.down_proj', 'layers.0.self_attn.o_proj', 'layers.0.self_attn.q_proj', 'layers.10.mlp.down_proj', 'layers.10.self_attn.o_proj', 'layers.10.self_attn.q_proj', 'layers.5.mlp.down_proj', 'layers.5.self_attn.o_proj', 'layers.5.self_attn.q_proj']; reserved check 0.65 -> 0.75; practice accuracy now 0.667, 0.333 of answers run out of tokens",
+    "practice": {
+     "tag": "14b_chain_gen1_practice",
+     "n": 60,
+     "acc": 0.6666666666666666,
+     "trunc": 0.3333333333333333,
+     "acc_fin": 1.0,
+     "mean_len": 2978.516666666667
+    }
+   }
+  },
+  "attempts": {
+   "gen1_try1": {
+    "decision": "withdraw",
+    "edits": {
+     "layers.30.self_attn.o_proj": 0.004644,
+     "layers.30.mlp.down_proj": 0.00138,
+     "layers.31.self_attn.o_proj": 0.004412,
+     "layers.31.mlp.down_proj": 0.001404,
+     "layers.32.self_attn.o_proj": 0.004636,
+     "layers.32.mlp.down_proj": 0.001397,
+     "layers.33.self_attn.o_proj": 0.003993,
+     "layers.33.mlp.down_proj": 0.001395,
+     "layers.34.self_attn.o_proj": 0.004572,
+     "layers.34.mlp.down_proj": 0.001409,
+     "layers.35.self_attn.o_proj": 0.005581,
+     "layers.35.mlp.down_proj": 0.001409,
+     "layers.0.self_attn.q_proj": 0.001345,
+     "layers.30.mlp.gate_proj": 0.008539,
+     "layers.31.mlp.gate_proj": 0.008567,
+     "layers.32.mlp.gate_proj": 0.008771,
+     "layers.33.mlp.gate_proj": 0.008656,
+     "layers.34.mlp.gate_proj": 0.008796,
+     "layers.35.mlp.gate_proj": 0.008146
+    },
+    "check": {
+     "n": 40,
+     "base_acc": 0.65,
+     "edit_acc": 0.65,
+     "delta": 0.0,
+     "se": 0.05063696835418333,
+     "wins": 2,
+     "losses": 2,
+     "p_sign_one_sided": 0.6875,
+     "base_trunc": 0.35,
+     "edit_trunc": 0.35,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "units_used": 10
+   },
+   "gen1_try2": {
+    "decision": "submit",
+    "edits": {
+     "layers.0.self_attn.o_proj": 0.250211,
+     "layers.0.mlp.down_proj": 0.100097,
+     "layers.5.self_attn.o_proj": 0.121609,
+     "layers.5.mlp.down_proj": 0.073537,
+     "layers.10.self_attn.o_proj": 0.112819,
+     "layers.10.mlp.down_proj": 0.061504,
+     "layers.0.self_attn.q_proj": 0.093395,
+     "layers.5.self_attn.q_proj": 0.100303,
+     "layers.10.self_attn.q_proj": 0.089482
+    },
+    "check": {
+     "n": 40,
+     "base_acc": 0.65,
+     "edit_acc": 0.75,
+     "delta": 0.1,
+     "se": 0.05991446895152781,
+     "wins": 5,
+     "losses": 1,
+     "p_sign_one_sided": 0.109375,
+     "base_trunc": 0.35,
+     "edit_trunc": 0.25,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "units_used": 9,
+    "edits_file": "out/14b_c4096_p60_e400_chain_gen1_try2_edits.safetensors"
+   },
+   "gen2_try1": {
+    "decision": "withdraw",
+    "edits": {},
+    "check": null,
+    "units_used": 5
+   },
+   "gen2_try2": {
+    "decision": "withdraw",
+    "edits": {
+     "layers.10.mlp.down_proj": 0.003433,
+     "layers.5.mlp.down_proj": 0.001386,
+     "layers.0.self_attn.o_proj": 0.00137,
+     "layers.0.self_attn.q_proj": 0.001397,
+     "layers.0.self_attn.v_proj": 0.003167
+    },
+    "check": {
+     "n": 40,
+     "base_acc": 0.75,
+     "edit_acc": 0.65,
+     "delta": -0.1,
+     "se": 0.059914468951527806,
+     "wins": 1,
+     "losses": 5,
+     "p_sign_one_sided": 0.984375,
+     "base_trunc": 0.25,
+     "edit_trunc": 0.35,
+     "base_looping": 0.0,
+     "edit_looping": 0.0,
+     "base_acc_finished": 1.0,
+     "edit_acc_finished": 1.0
+    },
+    "units_used": 3
+   }
+  },
+  "stopped": "generation 2: no edit kept in 2 sessions",
+  "echo": true,
+  "bs": 32,
+  "final_two_seeds": {
+   "generation": 1,
+   "seed1000": {
+    "n": 400,
+    "base_acc": 0.5725,
+    "edit_acc": 0.605,
+    "delta": 0.0325,
+    "se": 0.01594506153856647,
+    "wins": 27,
+    "losses": 14,
+    "p_sign_one_sided": 0.029791944009048166,
+    "base_trunc": 0.425,
+    "edit_trunc": 0.3925,
+    "base_looping": 0.0025,
+    "edit_looping": 0.0,
+    "base_acc_finished": 0.9956521739130435,
+    "edit_acc_finished": 0.9958847736625515
+   },
+   "seed2000": {
+    "n": 400,
+    "base_acc": 0.59,
+    "edit_acc": 0.585,
+    "delta": -0.005,
+    "se": 0.015829210649127012,
+    "wins": 19,
+    "losses": 21,
+    "p_sign_one_sided": 0.6820859986855794,
+    "base_trunc": 0.41,
+    "edit_trunc": 0.415,
+    "base_looping": 0.0,
+    "edit_looping": 0.0025,
+    "base_acc_finished": 1.0,
+    "edit_acc_finished": 1.0
+   }
+  }
+ }
+}

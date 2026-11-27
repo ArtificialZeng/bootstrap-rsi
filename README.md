@@ -11,7 +11,7 @@ The research is carried out by AI agents: they design the experiments, write the
 | | Status |
 |---|---|
 | **Step one: does a single weight edit help?** | ✅ Done, results below |
-| **The recursive chain: generation after generation, how far?** | ✅ First chain (Qwen3-8B) done: all four generations kept an edit, **no gain** (−1.9 points, p=0.10). ⏳ A second pre-registered chain on Qwen3-14B is running. |
+| **The recursive chain: generation after generation, how far?** | ✅ Two pre-registered chains done, **no gain in either**. Qwen3-8B kept an edit in all four generations (−1.9 points, p=0.10). Qwen3-14B kept one generation and stopped (+1.4 points, p=0.22). |
 
 **[→ Interactive report for step one (Chinese)](https://artificialzeng.github.io/bootstrap-rsi/)** · **[→ Long-form article (Chinese)](lab/handoff/codex/T16_article_v5_out.md)** · **[→ Pre-registration for the chain](lab/out/prereg_chain.md)**
 
@@ -39,7 +39,7 @@ An answer that reaches the cap without a final answer counts as wrong, as in the
 
 ![Accuracy change relative to baseline](assets/delta_vs_cap.svg)
 
-## The recursive chain: four generations, no gain
+## The recursive chain: two models, no gain
 
 In the paper, each of the eight sessions starts from the original weights, so the sessions do not build on each other. We link them into a chain:
 
@@ -70,14 +70,36 @@ What the sessions did, from the saved transcripts:
 
 Two defects of our own tooling, both recorded in dated addenda to the [pre-registration](lab/out/prereg_chain.md) before the affected results existed: a first chain (chain A) ran with a tool that hid return values, so it was stopped after one generation and declared exploratory; and an ambiguous error message cost one generation-4 session all of its tests (that session withdrew). The table above is chain B, the pre-registered chain.
 
-**Next.** A second pre-registered chain on Qwen3-14B asks whether a larger editor behaves differently. The code is the `chain` phase of [`lab/agent8b.py`](lab/agent8b.py); the analysis is [`lab/chain_stats.py`](lab/chain_stats.py); transcripts of every session are in [`lab/out/`](lab/out/).
+**A second pre-registered chain, on Qwen3-14B.** Same protocol, larger editor, specified before that model had produced any answer.
+
+| Generation | Session | Decision | Reserved check (40 problems) | Held-out accuracy (400) | vs generation 0 | gained / lost |
+|---|---|---|---|---|---|---|
+| 0 | n/a | n/a | n/a | 57.25% | n/a | n/a |
+| 0, second seed | n/a | n/a | n/a | 59.00% | +1.75 | 26 / 19 |
+| 1 | 1 | withdrawn | 65.0% → 65.0% | not scored | n/a | n/a |
+| 1 | 2 | kept | 65.0% → 75.0% | 60.50% | +3.25 | 27 / 14 |
+| 1, second seed | n/a | n/a | n/a | 58.50% | −0.50 | 19 / 21 |
+| 2 | 1 | withdrawn | not requested | not scored | n/a | n/a |
+| 2 | 2 | withdrawn | 75.0% → 65.0% | not scored | n/a | n/a |
+
+Second-seed rows are compared with generation 0 at the same seed. The chain stopped at generation 2 because neither session kept an edit.
+
+**Pre-registered test** (generation 1 vs generation 0, two seeds): **+1.4 points, 95% CI [−0.8, +3.6], p = 0.22.** That is below the 1.75 points by which the unedited model differs from itself under a new seed. The +3.25 at the first seed did not recur at the second. All 81 changed answers are between "ran out of tokens" and "correct".
+
+- **The 14B sessions did more.** One session read a reference answer against its own failed answer, and two sessions took an edit direction from a hidden-state readout. Neither happened in the seven 8B sessions. The edit it kept changed nine matrices by 6% to 25%; the largest change in the 8B chain was 1.9%.
+- **The two checks that decided the chain mirror each other.** A 6%–25% edit moved the reserved check from 65% to 75% and was kept. A later 0.14%–0.34% edit moved it from 75% back to 65% and was withdrawn. A change of a few parts in a thousand moves this 40-problem check by as much as the edit the chain kept, so the signal the model acted on is inside the check's own sampling noise.
+- **One generation, no accumulation.** The 8B chain kept edits for four generations without a gain; the 14B chain stopped after one. Neither shows a gain carried from one generation into the next.
+
+The first start of the 14B chain ran out of memory before any held-out answer existed; it was restarted with 32 answers generated at once instead of 64 (Addendum 4 of the [pre-registration](lab/out/prereg_chain.md)).
+
+**Code and records.** The chain is the `chain` phase of [`lab/agent8b.py`](lab/agent8b.py); the analysis is [`lab/chain_stats.py`](lab/chain_stats.py); transcripts of every session of both chains are in [`lab/out/`](lab/out/).
 
 ## Limits
 
-- **No recursive self-improvement was observed.** This is one chain on one 8B model with one benchmark and a 4,096-token cap; it does not show that self-editing cannot work for larger models, other tools or a stricter keep/withdraw rule.
-- The keep/withdraw decision had no numerical threshold, and 40 reserved problems resolve only large effects. A stricter rule would probably have stopped this chain at generation 1.
+- **No recursive self-improvement was observed.** This is one chain each on an 8B and a 14B model, with one benchmark and a 4,096-token cap; it does not show that self-editing cannot work for larger models, other tools or a stricter keep/withdraw rule. One chain per model says nothing about how often such chains gain.
+- The keep/withdraw decision had no numerical threshold, and 40 reserved problems resolve only large effects. A stricter rule would probably have stopped the 8B chain at generation 1.
 - Step one replicates "this edit works", not "the model finds this edit by itself".
-- The models here are 4B and 8B; the paper used 27B. We sample 1 answer per problem per seed with 2 seeds; the paper sampled 8 answers per problem. The second seed alone is not significant (+3.25, p=0.19).
+- The models here are 4B, 8B and 14B; the paper used 27B. We sample 1 answer per problem per seed with 2 seeds; the paper sampled 8 answers per problem. The second seed alone is not significant (+3.25, p=0.19).
 - The 8,192 and 16,384 results come from continuing truncated answers in segments. Whether that matches generating in one pass has only had limited checks.
 - The prompt arm has one seed so far.
 - The paper itself links its gain to fewer truncated answers (§3.6 and Appendix E.9). Our contribution is an independent replication and a per-problem attribution.
@@ -111,6 +133,8 @@ python -m venv .venv && .venv/bin/pip install mlx-lm math-verify scipy numpy
 .venv/bin/python cap_table.py --caps 4096,8192,12288,16384                                   # tables
 .venv/bin/python agent8b.py --phases reseed,chain --chain 4 --attempts 2 --echo --chain-name B   # the recursive chain (chain B)
 .venv/bin/python chain_stats.py --chain-name B                                                # its pre-registered test
+.venv/bin/python agent8b.py --model 14b --phases reseed,chain --chain 4 --attempts 2 --echo --bs 32   # the Qwen3-14B chain
+.venv/bin/python chain_stats.py --key 14b_c4096_p60_e400                                      # its pre-registered test
 ```
 
 You need Apple Silicon. We used 128 GB of memory; peak use was about 81 GB at batch size 128, so lower `--bs` on a smaller machine. Models and the MATH-500 problems are read from the Hugging Face cache; the model repositories are listed in `MODELS` in `mech.py`. The raw answer files (about 470 MB) are not in the repository and will be released separately.
