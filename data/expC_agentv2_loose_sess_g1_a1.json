@@ -1,0 +1,450 @@
+{
+  "decision": "rejected_by_gate",
+  "gate_result": {
+    "passed": false,
+    "delta": 0.0,
+    "se": 0.0358,
+    "z": 0.0,
+    "p_one": 0.75,
+    "wins": 1,
+    "losses": 1,
+    "tc": 0,
+    "ct": 1,
+    "wc": 1,
+    "cw": 0,
+    "delta_completion": -0.025,
+    "delta_reasoning": 0.025
+  },
+  "used_diagnostic": true,
+  "n_turns": 7,
+  "n_errors": 2,
+  "error_rate": 0.286,
+  "edits": {
+    "committed": [],
+    "staged": []
+  },
+  "history": [
+    {
+      "op": "scan_layers",
+      "contrast": "CW",
+      "window": "commit",
+      "result": {
+        "2": {
+          "cohen_d": 0.985,
+          "mean_diff_norm": 0.094,
+          "router_snr": 2.627,
+          "max_abs_t": 3.82
+        },
+        "6": {
+          "cohen_d": 1.253,
+          "mean_diff_norm": 0.14,
+          "router_snr": 2.444,
+          "max_abs_t": 2.89
+        },
+        "10": {
+          "cohen_d": 1.131,
+          "mean_diff_norm": 0.209,
+          "router_snr": 2.555,
+          "max_abs_t": 3.25
+        },
+        "14": {
+          "cohen_d": 1.188,
+          "mean_diff_norm": 0.26,
+          "router_snr": 2.723,
+          "max_abs_t": 3.98
+        },
+        "18": {
+          "cohen_d": 1.285,
+          "mean_diff_norm": 0.359,
+          "router_snr": 2.79,
+          "max_abs_t": 4.76
+        },
+        "22": {
+          "cohen_d": 1.163,
+          "mean_diff_norm": 0.432,
+          "router_snr": 2.918,
+          "max_abs_t": 3.89
+        },
+        "26": {
+          "cohen_d": 1.179,
+          "mean_diff_norm": 0.491,
+          "router_snr": 2.769,
+          "max_abs_t": 3.63
+        },
+        "30": {
+          "cohen_d": 1.506,
+          "mean_diff_norm": 0.738,
+          "router_snr": 2.835,
+          "max_abs_t": 3.85
+        },
+        "34": {
+          "cohen_d": 1.679,
+          "mean_diff_norm": 1.102,
+          "router_snr": 2.576,
+          "max_abs_t": 3.05
+        },
+        "38": {
+          "cohen_d": 1.472,
+          "mean_diff_norm": 2.011,
+          "router_snr": 2.829,
+          "max_abs_t": 3.82
+        }
+      }
+    },
+    {
+      "op": "scan_layers",
+      "contrast": "CT",
+      "window": "commit",
+      "result": {
+        "2": {
+          "cohen_d": 0.705,
+          "mean_diff_norm": 0.09,
+          "router_snr": 2.247,
+          "max_abs_t": 3.2
+        },
+        "6": {
+          "cohen_d": 1.096,
+          "mean_diff_norm": 0.138,
+          "router_snr": 2.332,
+          "max_abs_t": 2.63
+        },
+        "10": {
+          "cohen_d": 1.316,
+          "mean_diff_norm": 0.197,
+          "router_snr": 3.091,
+          "max_abs_t": 4.77
+        },
+        "14": {
+          "cohen_d": 1.203,
+          "mean_diff_norm": 0.274,
+          "router_snr": 2.957,
+          "max_abs_t": 4.55
+        },
+        "18": {
+          "cohen_d": 1.517,
+          "mean_diff_norm": 0.378,
+          "router_snr": 2.887,
+          "max_abs_t": 3.89
+        },
+        "22": {
+          "cohen_d": 1.327,
+          "mean_diff_norm": 0.498,
+          "router_snr": 3.265,
+          "max_abs_t": 3.93
+        },
+        "26": {
+          "cohen_d": 1.488,
+          "mean_diff_norm": 0.608,
+          "router_snr": 3.113,
+          "max_abs_t": 4.29
+        },
+        "30": {
+          "cohen_d": 2.071,
+          "mean_diff_norm": 0.878,
+          "router_snr": 3.132,
+          "max_abs_t": 4.38
+        },
+        "34": {
+          "cohen_d": 2.115,
+          "mean_diff_norm": 1.292,
+          "router_snr": 2.577,
+          "max_abs_t": 3.82
+        },
+        "38": {
+          "cohen_d": 1.982,
+          "mean_diff_norm": 2.084,
+          "router_snr": 2.647,
+          "max_abs_t": 4.04
+        }
+      }
+    },
+    {
+      "op": "scan_layers",
+      "contrast": "CW",
+      "window": "commit",
+      "result": {
+        "2": {
+          "cohen_d": 0.985,
+          "mean_diff_norm": 0.094,
+          "router_snr": 2.627,
+          "max_abs_t": 3.82
+        },
+        "6": {
+          "cohen_d": 1.253,
+          "mean_diff_norm": 0.14,
+          "router_snr": 2.444,
+          "max_abs_t": 2.89
+        },
+        "10": {
+          "cohen_d": 1.131,
+          "mean_diff_norm": 0.209,
+          "router_snr": 2.555,
+          "max_abs_t": 3.25
+        },
+        "14": {
+          "cohen_d": 1.188,
+          "mean_diff_norm": 0.26,
+          "router_snr": 2.723,
+          "max_abs_t": 3.98
+        },
+        "18": {
+          "cohen_d": 1.285,
+          "mean_diff_norm": 0.359,
+          "router_snr": 2.79,
+          "max_abs_t": 4.76
+        },
+        "22": {
+          "cohen_d": 1.163,
+          "mean_diff_norm": 0.432,
+          "router_snr": 2.918,
+          "max_abs_t": 3.89
+        },
+        "26": {
+          "cohen_d": 1.179,
+          "mean_diff_norm": 0.491,
+          "router_snr": 2.769,
+          "max_abs_t": 3.63
+        },
+        "30": {
+          "cohen_d": 1.506,
+          "mean_diff_norm": 0.738,
+          "router_snr": 2.835,
+          "max_abs_t": 3.85
+        },
+        "34": {
+          "cohen_d": 1.679,
+          "mean_diff_norm": 1.102,
+          "router_snr": 2.576,
+          "max_abs_t": 3.05
+        },
+        "38": {
+          "cohen_d": 1.472,
+          "mean_diff_norm": 2.011,
+          "router_snr": 2.829,
+          "max_abs_t": 3.82
+        }
+      }
+    },
+    {
+      "op": "scan_layers",
+      "contrast": "CT",
+      "window": "commit",
+      "result": {
+        "2": {
+          "cohen_d": 0.705,
+          "mean_diff_norm": 0.09,
+          "router_snr": 2.247,
+          "max_abs_t": 3.2
+        },
+        "6": {
+          "cohen_d": 1.096,
+          "mean_diff_norm": 0.138,
+          "router_snr": 2.332,
+          "max_abs_t": 2.63
+        },
+        "10": {
+          "cohen_d": 1.316,
+          "mean_diff_norm": 0.197,
+          "router_snr": 3.091,
+          "max_abs_t": 4.77
+        },
+        "14": {
+          "cohen_d": 1.203,
+          "mean_diff_norm": 0.274,
+          "router_snr": 2.957,
+          "max_abs_t": 4.55
+        },
+        "18": {
+          "cohen_d": 1.517,
+          "mean_diff_norm": 0.378,
+          "router_snr": 2.887,
+          "max_abs_t": 3.89
+        },
+        "22": {
+          "cohen_d": 1.327,
+          "mean_diff_norm": 0.498,
+          "router_snr": 3.265,
+          "max_abs_t": 3.93
+        },
+        "26": {
+          "cohen_d": 1.488,
+          "mean_diff_norm": 0.608,
+          "router_snr": 3.113,
+          "max_abs_t": 4.29
+        },
+        "30": {
+          "cohen_d": 2.071,
+          "mean_diff_norm": 0.878,
+          "router_snr": 3.132,
+          "max_abs_t": 4.38
+        },
+        "34": {
+          "cohen_d": 2.115,
+          "mean_diff_norm": 1.292,
+          "router_snr": 2.577,
+          "max_abs_t": 3.82
+        },
+        "38": {
+          "cohen_d": 1.982,
+          "mean_diff_norm": 2.084,
+          "router_snr": 2.647,
+          "max_abs_t": 4.04
+        }
+      }
+    },
+    {
+      "op": "compile_nullspace_lora",
+      "layers": [
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38
+      ],
+      "contrast": "CT",
+      "alpha": 0.4
+    },
+    {
+      "op": "test_practice",
+      "result": {
+        "n": 10,
+        "base_acc": 0.0,
+        "edit_acc": 0.1,
+        "delta": 0.1,
+        "wins": 1,
+        "losses": 0,
+        "tc": 0,
+        "ct": 0,
+        "wc": 1,
+        "cw": 0,
+        "delta_completion": 0.0,
+        "delta_reasoning": 0.1
+      }
+    },
+    {
+      "op": "test_practice",
+      "result": {
+        "n": 15,
+        "base_acc": 0.0,
+        "edit_acc": 0.1333,
+        "delta": 0.1333,
+        "wins": 2,
+        "losses": 0,
+        "tc": 2,
+        "ct": 0,
+        "wc": 0,
+        "cw": 0,
+        "delta_completion": 0.1333,
+        "delta_reasoning": 0.0
+      }
+    },
+    {
+      "op": "compile_router_edit",
+      "layers": [
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38
+      ],
+      "contrast": "CT",
+      "mode": "nullspace_lora",
+      "alpha": 0.4
+    },
+    {
+      "op": "test_practice",
+      "result": {
+        "n": 24,
+        "base_acc": 0.0,
+        "edit_acc": 0.125,
+        "delta": 0.125,
+        "wins": 3,
+        "losses": 0,
+        "tc": 3,
+        "ct": 0,
+        "wc": 0,
+        "cw": 0,
+        "delta_completion": 0.125,
+        "delta_reasoning": 0.0
+      }
+    },
+    {
+      "op": "test_practice",
+      "result": {
+        "n": 20,
+        "base_acc": 0.0,
+        "edit_acc": 0.0,
+        "delta": 0.0,
+        "wins": 0,
+        "losses": 0,
+        "tc": 0,
+        "ct": 0,
+        "wc": 0,
+        "cw": 0,
+        "delta_completion": 0.0,
+        "delta_reasoning": 0.0
+      }
+    }
+  ],
+  "transcript": [
+    {
+      "turn": 1,
+      "seconds": 6.2,
+      "code": "print(\"=== Listing failures ===\")\nprint(f\"Wrong (W): {tools.list_pids(state='W')[:10]}\")\nprint(f\"Truncated (T): {tools.list_pids(state='T')[:10]}\")\n\nprint(\"\\n=== Inspecting 3 representative failures ===\")\nfor pid in tools.list_pids(state='W')[:3]:\n    tools.inspect_failure(pid)",
+      "error": false,
+      "obs": "=== Listing failures ===\nWrong (W): ['sgpqa_9210b2b5d710', 'sgpqa_b2b23ea4e4b4', 'sgpqa_7a610644a207', 'sgpqa_b91d63f5b74d', 'sgpqa_1965fa40b087', 'sgpqa_19a0536ab58c', 'sgpqa_19892ef36bd7', 'sgpqa_5a822d6fe459', 'sgpqa_9c318c04c359', 'sgpqa_993eda854373']\nTruncated (T): ['sgpqa_aac7e329a196', 'sgpqa_ade5b0f68794', 'sgpqa_e8bb9d425129', 'sgpqa_fe1c4fb3524c', 'sgpqa_9b63c53c2d61', 'sgpqa_0cba8ad3d314', 'sgpqa_172e32a3b2dd', 'sgpqa_e6448ea1fb5e', 'sgpqa_4c94bf458a5a', 'sgpqa_182c44462e15']\n\n=== Inspecting 3 representative failures ==="
+    },
+    {
+      "turn": 2,
+      "seconds": 4.5,
+      "code": "print(\"=== Inspecting failures in detail ===\")\nfor pid in tools.list_pids(state='W')[:3]:\n    print(f\"\\n--- Wrong PID: {pid} ---\")\n    result = tools.inspect_failure(pid)\n    print(result)\n\nprint(\"\\n=== Layer Scan: Contrast Wrong vs Correct ===\")\ntools.scan_layers(contrast=\"CW\", window=\"commit\", step=4)\n\nprint(\"\\n=== Layer Scan: Contrast Truncated vs Correct ===\")\ntools.scan_layers(contrast=\"CT\", window=\"commit\", step=4)",
+      "error": false,
+      "obs": "=== Inspecting failures in detail ===\n\n--- Wrong PID: sgpqa_9210b2b5d710 ---\n{'pid': 'sgpqa_9210b2b5d710', 'state': 'W', 'ntok': 293, 'looping': False, 'boxed': 'C', 'gold': 'G', 'problem': 'A projectile is fired in such a way that its horizontal range is equal to\\nthree times its maximum height. What is the angle of projection?\\n\\nOptions:\\n(A) 57.50\\n(B) 56.81\\n(C) 53.13\\n(D) 55.00\\n(E) 56.42\\n(F) 54.74\\n(G) 56.31\\n(H) 56.10\\n(I) 56.00\\n(J) 56.50\\nPut only the single capital letter (A-J) inside \\\\boxed{}.', 'response_tail': 'Let $\\\\theta$ be the angle of projection. The horizontal range $R$ is given by $\\\\frac{u^2 \\\\sin 2\\\\theta}{g}$ and the maximum height $H$ is given by $\\\\frac{u^2 \\\\sin^2 \\\\theta}{2g}$.\\nThe problem states that $R = 3H$. Substituting the formulas:\\n$$ \\\\frac{u^2 \\\\sin 2\\\\theta}{g} = 3 \\\\left( \\\\frac{u^2 \\\\sin^2 \\\\theta}{2g} \\\\right) $$\\nSimplifying by cancelling $\\\\frac{u^2}{g}$ and using $\\\\sin 2\\\\theta = 2 \\\\sin \\\\theta \\\\cos \\\\theta$:\\n$$ 2 \\\\sin \\\\theta \\\\cos \\\\theta = \\\\frac{3}{2} \\\\sin^2 \\\\theta $$\\nDividing both sides by $\\\\sin \\\\theta$ (since $\\\\theta \\\\neq 0$):\\n$$ 2 \\\\cos \\\\theta = \\\\frac{3}{2} \\\\sin \\\\theta \\\\implies \\\\tan \\\\theta = \\\\frac{4}{3} $$\\nCalculating the angle: $\\\\theta = \\\\arctan(1.333...) \\\\approx 53.13^\\\\circ$.\\nComparing this to the options, it matches option (C).\\n\\n\\\\boxed{C}'}\n\n--- Wrong PID: sgpqa_b2b23ea4e4b4 ---\n{'pid': 'sgpqa_b2b23ea4e4b4', 'state': 'W', 'ntok': 5, 'looping': False, 'boxed': 'E', 'gold': 'B', 'problem': 'Two loudspeakers M and N are located $20$ m apart and emit sound at frequencies $118$ Hz and $121$ Hz respectively. A car is initially at a point P, $1800$ m away from the midpoint Q of the line MN and moves towards Q constantly at $60$ km/hr along perpendicular bisector of MN. It crosses Q and eventually reaches a point R, $1800$ m away from Q. Let $\\nu(t)$ represent the beat frequency measured by a person sitting in the car at time $t$. Let ${\\nu }_{ p }$, ${\\nu}_{ Q }$ and ${\\nu}_{ R }$ be the beat frequencies measured at locations P, Q and R, respectively. The speed of sound in air is $330$ ${', 'response_tail': '\\\\boxed{E}'}\n\n--- Wrong PID: sgpqa_7a610644a207 ---\n{'pid': 'sgpqa_7a610644a207', 'state': 'W', 'ntok': 265, 'looping': False, 'boxed': 'A', 'gold': 'F', 'problem': 'In the proton intersecting storage ring (ISR) at CERN, a proton-proton collision is achieved with an energy of $30 \\\\mathrm{GeV}$. To achieve the same center-of-mass energy as the ISR using a proton accelerator to accelerate protons to bombard stationary protons, what should the energy of the proton be?\\n\\nOptions:\\n(A) $$\\n1. 1 8 \\\\times1 0^{3} \\\\mathrm{G e V}\\n$$\\n(B) $$\\n2. 0 5 \\\\times1 0^{3} \\\\mathrm{G e V}\\n$$\\n(C) $$\\n1. 4 6 \\\\times1 0^{3} \\\\mathrm{G e V}\\n$$\\n(D) $$\\n5. 9 3 \\\\times1 0^{3} \\\\mathrm{G e V}\\n$$\\n(E) $$\\n2. 3 7 \\\\times1 0^{3} \\\\mathrm{G e V}\\n$$\\n(F) $$\\n1. 9 2 \\\\times1 0^{3} \\\\mathrm{G e V}\\n$$\\n(G) $$\\n4. ', 'response_tail': 'The center-of-mass energy squared ($s$) for a collide\n...[truncated]"
+    },
+    {
+      "turn": 3,
+      "seconds": 14.6,
+      "code": "print(\"=== Layer Contrast Analysis ===\")\nprint(\"\\nCW contrast (Wrong vs Correct):\")\ncw_scan = tools.scan_layers(contrast=\"CW\", window=\"commit\", step=4)\nprint(cw_scan)\n\nprint(\"\\nCT contrast (Truncated vs Correct):\")\nct_scan = tools.scan_layers(contrast=\"CT\", window=\"commit\", step=4)\nprint(ct_scan)",
+      "error": false,
+      "obs": "=== Layer Contrast Analysis ===\n\nCW contrast (Wrong vs Correct):\n{2: {'cohen_d': 0.985, 'mean_diff_norm': 0.094, 'router_snr': 2.627, 'max_abs_t': 3.82}, 6: {'cohen_d': 1.253, 'mean_diff_norm': 0.14, 'router_snr': 2.444, 'max_abs_t': 2.89}, 10: {'cohen_d': 1.131, 'mean_diff_norm': 0.209, 'router_snr': 2.555, 'max_abs_t': 3.25}, 14: {'cohen_d': 1.188, 'mean_diff_norm': 0.26, 'router_snr': 2.723, 'max_abs_t': 3.98}, 18: {'cohen_d': 1.285, 'mean_diff_norm': 0.359, 'router_snr': 2.79, 'max_abs_t': 4.76}, 22: {'cohen_d': 1.163, 'mean_diff_norm': 0.432, 'router_snr': 2.918, 'max_abs_t': 3.89}, 26: {'cohen_d': 1.179, 'mean_diff_norm': 0.491, 'router_snr': 2.769, 'max_abs_t': 3.63}, 30: {'cohen_d': 1.506, 'mean_diff_norm': 0.738, 'router_snr': 2.835, 'max_abs_t': 3.85}, 34: {'cohen_d': 1.679, 'mean_diff_norm': 1.102, 'router_snr': 2.576, 'max_abs_t': 3.05}, 38: {'cohen_d': 1.472, 'mean_diff_norm': 2.011, 'router_snr': 2.829, 'max_abs_t': 3.82}}\n\nCT contrast (Truncated vs Correct):\n{2: {'cohen_d': 0.705, 'mean_diff_norm': 0.09, 'router_snr': 2.247, 'max_abs_t': 3.2}, 6: {'cohen_d': 1.096, 'mean_diff_norm': 0.138, 'router_snr': 2.332, 'max_abs_t': 2.63}, 10: {'cohen_d': 1.316, 'mean_diff_norm': 0.197, 'router_snr': 3.091, 'max_abs_t': 4.77}, 14: {'cohen_d': 1.203, 'mean_diff_norm': 0.274, 'router_snr': 2.957, 'max_abs_t': 4.55}, 18: {'cohen_d': 1.517, 'mean_diff_norm': 0.378, 'router_snr': 2.887, 'max_abs_t': 3.89}, 22: {'cohen_d': 1.327, 'mean_diff_norm': 0.498, 'router_snr': 3.265, 'max_abs_t': 3.93}, 26: {'cohen_d': 1.488, 'mean_diff_norm': 0.608, 'router_snr': 3.113, 'max_abs_t': 4.29}, 30: {'cohen_d': 2.071, 'mean_diff_norm': 0.878, 'router_snr': 3.132, 'max_abs_t': 4.38}, 34: {'cohen_d': 2.115, 'mean_diff_norm': 1.292, 'router_snr': 2.577, 'max_abs_t': 3.82}, 38: {'cohen_d': 1.982, 'mean_diff_norm': 2.084, 'router_snr': 2.647, 'max_abs_t': 4.04}}"
+    },
+    {
+      "turn": 4,
+      "seconds": 13.8,
+      "code": "print(\"=== Applying Null-Space LoRA on late layers ===\")\nprint(\"Targeting layers 30-38 where truncation divergence is highest\")\n\nedit_result = tools.compile_nullspace_lora(\n    layers=list(range(30, 39)),\n    contrast=\"CT\",\n    alpha=0.4,\n    rank=4,\n    lam_keep=4.0,\n    window=\"commit\"\n)\nprint(edit_result)\n\nprint(\"\\n=== Testing edits on practice problems ===\")\ntools.test_practice(tools.list_pids(state='W')[:10])",
+      "error": false,
+      "obs": "=== Applying Null-Space LoRA on late layers ===\nTargeting layers 30-38 where truncation divergence is highest\n{30: {'cohen_d': 2.069, 'selectivity': 2.16, 'frob': 0.0495}, 31: {'cohen_d': 1.967, 'selectivity': 2.18, 'frob': 0.0503}, 32: {'cohen_d': 1.94, 'selectivity': 1.43, 'frob': 0.0445}, 33: {'cohen_d': 2.007, 'selectivity': 2.22, 'frob': 0.0614}, 34: {'cohen_d': 2.104, 'selectivity': 2.71, 'frob': 0.072}, 35: {'cohen_d': 2.012, 'selectivity': 2.78, 'frob': 0.0759}, 36: {'cohen_d': 2.015, 'selectivity': 1.96, 'frob': 0.0772}, 37: {'cohen_d': 2.163, 'selectivity': 2.26, 'frob': 0.0839}, 38: {'cohen_d': 2.054, 'selectivity': 2.77, 'frob': 0.1091}}\n\n=== Testing edits on practice problems ===\n{'n': 10, 'base_acc': 0.0, 'edit_acc': 0.1, 'delta': 0.1, 'wins': 1, 'losses': 0, 'tc': 0, 'ct': 0, 'wc': 1, 'cw': 0, 'delta_completion': 0.0, 'delta_reasoning': 0.1}"
+    },
+    {
+      "turn": 5,
+      "seconds": 12.1,
+      "code": "print(\"=== Testing on more truncated problems ===\")\nt_pids = tools.list_pids(state='T')[:15]\ntools.test_practice(t_pids)\n\nprint(\"\\n=== Applying Router Self-Rewiring ===\")\ntools.compile_router_edit(\n    layers=list(range(28, 39)),\n    contrast=\"CT\",\n    mode=\"nullspace_lora\",\n    alpha=0.4,\n    top_m=32,\n    rank=8,\n    lam_keep=4.0,\n    window=\"commit\"\n)\n\nprint(\"\\n=== Full practice test ===\")\ntools.test_practice(tools.list_pids(state='W')[:20] + tools.list_pids(state='T')[:20])",
+      "error": true,
+      "obs": "ERROR (ValueError): Pass 1..24 practice pids (got 40)\n(Any partial edits from this turn were atomically rolled back.)"
+    },
+    {
+      "turn": 6,
+      "seconds": 8.6,
+      "code": "print(\"=== Testing on truncated problems (limit 24) ===\")\nt_pids = tools.list_pids(state='T')[:24]\ntools.test_practice(t_pids)\n\nprint(\"\\n=== Testing on wrong problems ===\")\nw_pids = tools.list_pids(state='W')[:24]\ntools.test_practice(w_pids)\n\nprint(\"\\n=== Layer scan on pivot window ===\")\ntools.scan_layers(contrast=\"CT\", window=\"pivot\", step=4)",
+      "error": true,
+      "obs": "ERROR (RuntimeError): Budget exhausted (0 left, scan_layers needs 1). Call tools.submit() or tools.withdraw().\n(Any partial edits from this turn were atomically rolled back.)"
+    },
+    {
+      "turn": 7,
+      "seconds": 7.3,
+      "code": "print(\"=== Checking current status ===\")\ntools.status()\n\nprint(\"\\n=== Submitting with staged edits ===\")\ntools.submit()",
+      "error": false,
+      "obs": "=== Checking current status ===\n\n=== Submitting with staged edits ===\n  [gen] n=40 cap=768 bs=64 seed=1000: 23736 tok in 198.1s (119.8 tok/s) peak=33.0GB\n{'passed': False, 'delta': 0.0, 'se': 0.0358, 'z': 0.0, 'p_one': 0.75, 'wins': 1, 'losses': 1, 'tc': 0, 'ct': 1, 'wc': 1, 'cw': 0, 'delta_completion': -0.025, 'delta_reasoning': 0.025}"
+    }
+  ]
+}

@@ -1,8 +1,0 @@
-{
- "n_eval": 400,
- "cap": 4096,
- "fixed": "6,1.0",
- "dirs": "out/dirs.npz",
- "practice": "out/practice_base.pkl",
- "bs": 64
-}
